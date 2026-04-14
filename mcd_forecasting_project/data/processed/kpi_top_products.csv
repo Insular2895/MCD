@@ -1,0 +1,31 @@
+store_id,product_name,total_qty_sold,total_revenue
+S001,Cheeseburger,1730,5536.0
+S001,Menu Big Mac,1710,16929.0
+S001,Big Mac,1516,8944.4
+S001,McChicken,1197,6583.5
+S001,Menu McChicken,1145,11106.5
+S001,Coca M,1075,3225.0
+S001,Frites M,998,2994.0
+S001,McNuggets 6,905,4706.0
+S001,Sundae,715,2145.0
+S001,McNuggets 4,670,2814.0
+S001,McNuggets 9,616,4004.0
+S001,McFlurry,550,2310.0
+S001,Coca L,430,1505.0
+S001,Frites L,396,1386.0
+S001,McNuggets 20,261,3105.9
+S002,Menu Big Mac,1631,16146.9
+S002,Cheeseburger,1623,5193.6
+S002,Big Mac,1392,8212.8
+S002,McChicken,1114,6127.0
+S002,Menu McChicken,1073,10408.1
+S002,Frites M,1042,3126.0
+S002,Coca M,1017,3051.0
+S002,McNuggets 6,932,4846.4
+S002,McNuggets 4,700,2940.0
+S002,McNuggets 9,693,4504.5
+S002,Sundae,657,1971.0
+S002,McFlurry,589,2473.8
+S002,Frites L,391,1368.5
+S002,Coca L,360,1260.0
+S002,McNuggets 20,249,2963.1

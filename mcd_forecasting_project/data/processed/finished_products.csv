@@ -1,0 +1,16 @@
+product_id,product_name,product_type,base_price,category,is_menu,default_size
+P001,Big Mac,individual,5.9,burger,0,
+P002,Cheeseburger,individual,3.2,burger,0,
+P003,McChicken,individual,5.5,burger,0,
+P004,McNuggets 4,individual,4.2,nuggets,0,
+P005,McNuggets 6,individual,5.2,nuggets,0,
+P006,McNuggets 9,individual,6.5,nuggets,0,
+P007,McNuggets 20,individual,11.9,nuggets,0,
+P008,Frites M,individual,3.0,fries,0,M
+P009,Frites L,individual,3.5,fries,0,L
+P010,Coca M,individual,3.0,drink,0,M
+P011,Coca L,individual,3.5,drink,0,L
+P012,Sundae,individual,3.0,dessert,0,
+P013,McFlurry,individual,4.2,dessert,0,
+P014,Menu Big Mac,menu,9.9,menu,1,M
+P015,Menu McChicken,menu,9.7,menu,1,M

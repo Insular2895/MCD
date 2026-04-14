@@ -1,0 +1,3 @@
+store_id,total_order_value,total_order_cases,stockout_flags,low_stock_flags,waste_risk_flags
+S001,17026.36,696,3,205,30
+S002,16437.04,669,0,213,30
