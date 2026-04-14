@@ -1,6 +1,6 @@
-# Project Overview and Data Flow
+# Vue d'ensemble et flux de données du projet
 
-**Related Files**:
+**Fichiers associés** :
 - `mcd_forecasting_project/data/raw/MCD_Forecasting_excel.xlsx`
 - `mcd_forecasting_project/data/processed/fact_sales_hourly.csv`
 - `mcd_forecasting_project/data/processed/component_hourly_demand.csv`
@@ -15,22 +15,22 @@
 - `mcd_forecasting_project/scripts/11_generate_order_recommendations.py`
 - `mcd_forecasting_project/scripts/11_build_kpi_tables.py`
 
-**Related Pages**:
-- Master Data and Synthetic Environment
-- Synthetic Sales Generation and Analysis
-- From Sales to Component Demand and Inventory Simulation
-- Order Recommendation Engine
-- KPI and Reporting Layer
+**Pages associées** :
+- Données maîtres et environnement synthétique
+- Génération et analyse des ventes synthétiques
+- De la demande de composants à la simulation d'inventaire
+- Moteur de recommandation de commandes
+- Couche KPI et reporting
 
 <details>
-<summary>Relevant source files</summary>
+<summary>Fichiers source pertinents</summary>
 
-The following files were used as context for generating this wiki page:
+Les fichiers suivants ont été utilisés comme contexte pour générer cette page wiki :
 
 - [mcd_forecasting_project/data/raw/MCD_Forecasting_excel.xlsx](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/data/raw/MCD_Forecasting_excel.xlsx)
 - [mcd_forecasting_project/data/processed/fact_sales_hourly.csv](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/data/processed/fact_sales_hourly.csv)
 - [mcd_forecasting_project/data/processed/component_hourly_demand.csv](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/data/processed/component_hourly_demand.csv)
-- [mcd_forecasting_project/data/processed/inventory_replenishment_daily.csv](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/data/processed/inventory_replenishment_daily.csv)
+- [mcd_forecasting_project/data/processed/inventory_replenishment_daily.csv](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/data/processed/inventory_replenishment_dai[...]
 - [mcd_forecasting_project/data/processed/order_recommendations.csv](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/data/processed/order_recommendations.csv)
 - [mcd_forecasting_project/data/processed/kpi_network_sales_summary.csv](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/data/processed/kpi_network_sales_summary.csv)
 - [mcd_forecasting_project/data/processed/kpi_daily_store_kpi.csv](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/data/processed/kpi_daily_store_kpi.csv)
@@ -41,29 +41,29 @@ The following files were used as context for generating this wiki page:
 - [mcd_forecasting_project/scripts/07_generate_hourly_sales.py](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/scripts/07_generate_hourly_sales.py)
 - [mcd_forecasting_project/scripts/08_analyze_sales_patterns.py](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/scripts/08_analyze_sales_patterns.py)
 - [mcd_forecasting_project/scripts/09_explode_sales_to_components.py](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/scripts/09_explode_sales_to_components.py)
-- [mcd_forecasting_project/scripts/10_generate_inventory_and_replenishment.py](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/scripts/10_generate_inventory_and_replenishment.py)
+- [mcd_forecasting_project/scripts/10_generate_inventory_and_replenishment.py](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/scripts/10_generate_inventory_and_replen[...]
 - [mcd_forecasting_project/scripts/11_generate_order_recommendations.py](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/scripts/11_generate_order_recommendations.py)
 - [mcd_forecasting_project/scripts/11_build_kpi_tables.py](https://github.com/Insular2895/MCD_forecasting/blob/main/mcd_forecasting_project/scripts/11_build_kpi_tables.py)
 </details>
 
-# Project Overview and Data Flow
+# Vue d'ensemble et flux de données du projet
 
-The MCD_forecasting project simulates restaurant sales, decomposes them into component demand, and derives inventory, replenishment, order recommendations, and KPI tables. The data pipeline is file-based, using CSVs generated step‑by‑step from master data and synthetic calendars/events to downstream operational outputs. Sources: [01_load_master_data.py](), [07_generate_hourly_sales.py](), [09_explode_sales_to_components.py](), [10_generate_inventory_and_replenishment.py](), [11_generate_order_recommendations.py](), [11_build_kpi_tables.py]()
+Le projet MCD_forecasting simule les ventes de restaurants, les décompose en demande de composants et génère des tableaux d'inventaire, de réapprovisionnement, de recommandations de commandes et de KPIs. Le pipeline de données est basé sur des fichiers [...]
 
-This page documents the end‑to‑end data flow from raw Excel inputs through processed fact tables to inventory and KPI outputs. It focuses on how scripts interact via CSV artifacts, how demand is transformed from menu sales to component‑level consumption, and how order recommendations and KPI tables are derived from these datasets. Sources: [01_load_master_data.py](), [02_validate_master_data.py](), [05_create_calendar_hourly.py](), [06_create_local_events.py](), [08_analyze_sales_patterns.py]()
+Cette page documente le flux de données complet du début à la fin, depuis les entrées Excel brutes jusqu'aux tableaux de faits traités, aux inventaires et aux résultats KPI. Elle se concentre sur la façon dont les scripts interagissent via des artefacts CSV, sur la façon dont la demande est transformée [...]
 
 ---
 
-## High‑Level Architecture and Pipeline
+## Architecture et pipeline de haut niveau
 
-### End‑to‑End Data Flow Overview
+### Vue d'ensemble du flux de données de bout en bout
 
-The project is organized as a linear pipeline of scripts operating on files in `data/raw` and `data/processed`. Raw Excel data is first exported to CSV, then validated. Calendar and events are generated, hourly sales are simulated, sales are exploded into components, inventory is simulated, order recommendations are produced, and finally KPI tables are built. Sources: [01_load_master_data.py:3-18](), [02_validate_master_data.py:3-35](), [05_create_calendar_hourly.py:1-18](), [06_create_local_events.py:1-18](), [07_generate_hourly_sales.py:1-40](), [09_explode_sales_to_components.py:1-120](), [10_generate_inventory_and_replenishment.py:1-60](), [11_generate_order_recommendations.py:1-110](), [11_build_kpi_tables.py:1-80]()
+Le projet est organisé comme un pipeline linéaire de scripts opérant sur des fichiers dans `data/raw` et `data/processed`. Les données Excel brutes sont d'abord exportées en CSV, puis validées. Le calendrier et les événements sont générés [...]
 
 ```mermaid
 graph TD
-  RawExcel["Raw Excel\nMCD_Forecasting_excel.xlsx"]
-  MasterCSV["Master CSV\nfinished_products,\ncomponents,\nbom_recipes"]
+  RawExcel["Excel brut\nMCD_Forecasting_excel.xlsx"]
+  MasterCSV["CSV maître\nproduits_finis,\ncomposants,\nrecettes_bom"]
   Calendar["calendar_hourly.csv"]
   Events["local_events.csv"]
   FactSales["fact_sales_hourly.csv"]
@@ -89,31 +89,31 @@ graph TD
   ComponentDemand --> KPIs
 ```
 
-Sources: [01_load_master_data.py:3-18](), [05_create_calendar_hourly.py:9-18](), [06_create_local_events.py:1-18](), [07_generate_hourly_sales.py:1-40](), [09_explode_sales_to_components.py:1-120](), [10_generate_inventory_and_replenishment.py:40-72](), [11_generate_order_recommendations.py:1-40](), [11_build_kpi_tables.py:1-35]()
+Sources : [01_load_master_data.py:3-18](), [05_create_calendar_hourly.py:9-18](), [06_create_local_events.py:1-18](), [07_generate_hourly_sales.py:1-40](), [09_explode_sales_to_components.py:1-120](), [...]
 
-### Key Pipeline Stages
+### Étapes clés du pipeline
 
-| Stage | Input | Output | Main Script | Purpose |
-|-------|-------|--------|-------------|---------|
-| Master data load | `MCD_Forecasting_excel.xlsx` | `finished_products.csv`, `components.csv`, `bom_recipes.csv` | `01_load_master_data.py` | Extracts product, component, and BOM definitions from Excel. |
-| Master data validation | Master CSVs | (console output only) | `02_validate_master_data.py` | Checks shapes, missing values, duplicates, and BOM referential integrity. |
-| Calendar generation | (internal date logic) | `calendar_hourly.csv` | `05_create_calendar_hourly.py` | Builds hourly calendar with weekday, weekend, holiday, and fair flags. |
-| Local events | (script-defined) | `local_events.csv` | `06_create_local_events.py` | Defines store‑level events with traffic impact and active hours. |
-| Hourly sales simulation | Master CSVs, `calendar_hourly.csv`, `local_events.csv` | `fact_sales_hourly.csv` | `07_generate_hourly_sales.py` | Simulates hourly product sales with price, revenue, and multipliers. |
-| Explode to components | `fact_sales_hourly.csv`, master CSVs, BOM | `exploded_product_demand.csv`, `component_hourly_demand.csv` | `09_explode_sales_to_components.py` | Expands menu products and converts product sales to component demand. |
-| Inventory & replenishment | `component_hourly_demand.csv`, master component data | `inventory_replenishment_daily.csv` | `10_generate_inventory_and_replenishment.py` | Simulates stock, safety stock, reorder points, and recommended orders. |
-| Order recommendations | `inventory_replenishment_daily.csv`, `components.csv` | `order_recommendations.csv` | `11_generate_order_recommendations.py` | Refines order recommendations with 3‑day forecasts and urgency. |
-| KPI tables | `fact_sales_hourly.csv`, `inventory_replenishment_daily.csv`, `component_hourly_demand.csv` | `kpi_*.csv` | `11_build_kpi_tables.py` | Aggregates sales and inventory KPIs by store, hour, component, and day. |
+| Étape | Entrée | Sortie | Script principal | Objectif |
+|-------|--------|--------|------------------|----------|
+| Chargement données maîtres | `MCD_Forecasting_excel.xlsx` | `produits_finis.csv`, `composants.csv`, `recettes_bom.csv` | `01_load_master_data.py` | Extrait les définitions de produits, composants et nomenclature depuis Excel [...]
+| Validation données maîtres | CSV maîtres | (sortie console uniquement) | `02_validate_master_data.py` | Vérifie les formes, valeurs manquantes, doublons et intégrité référentielle de la nomenclature. |
+| Génération calendrier | (logique date interne) | `calendar_hourly.csv` | `05_create_calendar_hourly.py` | Construit calendrier horaire avec drapeaux jour semaine, weekend, vacances et fête. |
+| Événements locaux | (défini dans script) | `local_events.csv` | `06_create_local_events.py` | Définit événements niveau magasin avec impact trafic et heures actives. |
+| Simulation ventes horaires | CSV maîtres, `calendar_hourly.csv`, `local_events.csv` | `fact_sales_hourly.csv` | `07_generate_hourly_sales.py` | Simule ventes produits horaires avec prix, revenu et m[...]
+| Explosion vers composants | `fact_sales_hourly.csv`, CSV maîtres, BOM | `exploded_product_demand.csv`, `component_hourly_demand.csv` | `09_explode_sales_to_components.py` | Développe produits menu et con[...]
+| Inventaire & réapprovisionnement | `component_hourly_demand.csv`, données composant maître | `inventory_replenishment_daily.csv` | `10_generate_inventory_and_replenishment.py` | Simule stock, stock de sécurité,[...]
+| Recommandations de commande | `inventory_replenishment_daily.csv`, `composants.csv` | `order_recommendations.csv` | `11_generate_order_recommendations.py` | Affine recommandations commande avec prévision 3 jours[...]
+| Tables KPI | `fact_sales_hourly.csv`, `inventory_replenishment_daily.csv`, `component_hourly_demand.csv` | `kpi_*.csv` | `11_build_kpi_tables.py` | Agrège KPIs ventes et inventaire par magasin, heure[...]
 
-Sources: [01_load_master_data.py:3-18](), [02_validate_master_data.py:3-35](), [05_create_calendar_hourly.py:9-18](), [06_create_local_events.py:1-18](), [07_generate_hourly_sales.py:1-40](), [09_explode_sales_to_components.py:1-120](), [10_generate_inventory_and_replenishment.py:40-72](), [11_generate_order_recommendations.py:1-40](), [11_build_kpi_tables.py:1-80]()
+Sources : [01_load_master_data.py:3-18](), [02_validate_master_data.py:3-35](), [05_create_calendar_hourly.py:9-18](), [06_create_local_events.py:1-18](), [07_generate_hourly_sales.py:1-40](), [09_expl[...]
 
 ---
 
-## Master Data Extraction and Validation
+## Extraction et validation des données maîtres
 
-### Loading Master Data from Excel
+### Chargement des données maîtres depuis Excel
 
-The project starts with a single Excel file `MCD_Forecasting_excel.xlsx` under `data/raw`. Sheet names `finished_products`, `components`, and `bom_recipes` are loaded into Pandas DataFrames and exported to CSV under `data/processed`. Sources: [01_load_master_data.py:3-18]()
+Le projet commence avec un unique fichier Excel `MCD_Forecasting_excel.xlsx` dans `data/raw`. Les noms de feuilles `produits_finis`, `composants` et `recettes_bom` sont chargés dans des DataFrames Pandas et exportés [...]
 
 ```python
 from pathlib import Path
@@ -125,108 +125,108 @@ excel_file = BASE_DIR / "data" / "raw" / "MCD_Forecasting_excel.xlsx"
 output_dir = BASE_DIR / "data" / "processed"
 output_dir.mkdir(parents=True, exist_ok=True)
 
-finished_products = pd.read_excel(excel_file, sheet_name="finished_products")
-components = pd.read_excel(excel_file, sheet_name="components")
-bom_recipes = pd.read_excel(excel_file, sheet_name="bom_recipes")
+produits_finis = pd.read_excel(excel_file, sheet_name="produits_finis")
+composants = pd.read_excel(excel_file, sheet_name="composants")
+recettes_bom = pd.read_excel(excel_file, sheet_name="recettes_bom")
 
-finished_products.to_csv(output_dir / "finished_products.csv", index=False)
-components.to_csv(output_dir / "components.csv", index=False)
-bom_recipes.to_csv(output_dir / "bom_recipes.csv", index=False)
+produits_finis.to_csv(output_dir / "produits_finis.csv", index=False)
+composants.to_csv(output_dir / "composants.csv", index=False)
+recettes_bom.to_csv(output_dir / "recettes_bom.csv", index=False)
 ```
 
-Sources: [01_load_master_data.py:3-18]()
+Sources : [01_load_master_data.py:3-18]()
 
-### Master Data Validation
+### Validation des données maîtres
 
-Validation checks include:
+Les vérifications de validation incluent :
 
-- Printing shapes of `finished_products`, `components`, and `bom_recipes`.
-- Counting missing values per column in each table.
-- Detecting duplicate `product_id` in finished products and duplicate `component_id` in components.
-- Ensuring BOM references only valid product and component IDs.
-- Identifying duplicate (`product_id`, `component_id`) pairs in BOM. Sources: [02_validate_master_data.py:3-40]()
+- Affichage des formes de `produits_finis`, `composants` et `recettes_bom`.
+- Comptage des valeurs manquantes par colonne dans chaque table.
+- Détection des `product_id` doublons en produits finis et `component_id` doublons en composants.
+- Vérification que BOM ne référence que des ID produits et composants valides.
+- Identification des paires (`product_id`, `component_id`) doublons en BOM. Sources : [02_validate_master_data.py:3-40]()
 
 ```python
-finished_products = pd.read_csv(data_dir / "finished_products.csv")
-components = pd.read_csv(data_dir / "components.csv")
-bom_recipes = pd.read_csv(data_dir / "bom_recipes.csv")
+produits_finis = pd.read_csv(data_dir / "produits_finis.csv")
+composants = pd.read_csv(data_dir / "composants.csv")
+recettes_bom = pd.read_csv(data_dir / "recettes_bom.csv")
 
-valid_product_ids = set(finished_products["product_id"])
-valid_component_ids = set(components["component_id"])
+valid_product_ids = set(produits_finis["product_id"])
+valid_component_ids = set(composants["component_id"])
 
-invalid_bom_products = bom_recipes.loc[~bom_recipes["product_id"].isin(valid_product_ids)]
-invalid_bom_components = bom_recipes.loc[~bom_recipes["component_id"].isin(valid_component_ids)]
+invalid_bom_products = recettes_bom.loc[~recettes_bom["product_id"].isin(valid_product_ids)]
+invalid_bom_components = recettes_bom.loc[~recettes_bom["component_id"].isin(valid_component_ids)]
 
-dup_bom = bom_recipes.duplicated(subset=["product_id", "component_id"]).sum()
+dup_bom = recettes_bom.duplicated(subset=["product_id", "component_id"]).sum()
 ```
 
-Sources: [02_validate_master_data.py:3-40]()
+Sources : [02_validate_master_data.py:3-40]()
 
 ---
 
-## Calendar and Event Generation
+## Génération du calendrier et des événements
 
-### Hourly Calendar
+### Calendrier horaire
 
-An hourly calendar is generated with:
+Un calendrier horaire est généré avec :
 
-- `datetime_hour`, `year`, `month`, `day`.
-- `day_of_week`, `is_weekend`, `is_wednesday`.
-- `is_school_holiday`, `is_fair_period`, `is_fair_peak_weekend`. Sources: [05_create_calendar_hourly.py:9-18]()
+- `datetime_hour`, `année`, `mois`, `jour`.
+- `jour_semaine`, `est_weekend`, `est_mercredi`.
+- `est_vacances_scolaires`, `est_periode_fete`, `est_weekend_pic_fete`. Sources : [05_create_calendar_hourly.py:9-18]()
 
-The calendar is saved to `calendar_hourly.csv` in `data/processed`. Sources: [05_create_calendar_hourly.py:9-18]()
+Le calendrier est enregistré dans `calendar_hourly.csv` dans `data/processed`. Sources : [05_create_calendar_hourly.py:9-18]()
 
-### Local Events Definition
+### Définition des événements locaux
 
-Local events are defined as a Pandas DataFrame and exported to `local_events.csv`. Each event has:
+Les événements locaux sont définis comme un DataFrame Pandas et exportés vers `local_events.csv`. Chaque événement contient :
 
 - `event_id`, `event_name`.
 - `start_date`, `end_date`.
 - `target_store_id`.
 - `event_type`.
 - `traffic_uplift_pct`, `traffic_downlift_pct_other_store`.
-- `active_hours` (comma‑separated string of hour integers). Sources: [06_create_local_events.py:1-18]()
+- `active_hours` (chaîne de nombres d'heures séparés par des virgules). Sources : [06_create_local_events.py:1-18]()
 
-Example event:
+Exemple d'événement :
 
 ```python
 {
     "event_id": "E004",
-    "event_name": "Holiday week city center boost",
+    "event_name": "Boost vacances centre-ville",
     "start_date": "2026-04-04",
     "end_date": "2026-04-08",
     "target_store_id": "S001",
-    "event_type": "holiday_boost",
+    "event_type": "boost_vacances",
     "traffic_uplift_pct": 0.20,
     "traffic_downlift_pct_other_store": -0.05,
     "active_hours": "11,12,13,14,15,16,17,18"
 }
 ```
 
-Sources: [06_create_local_events.py:8-18]()
+Sources : [06_create_local_events.py:8-18]()
 
 ---
 
-## Hourly Sales Simulation (`fact_sales_hourly.csv`)
+## Simulation des ventes horaires (`fact_sales_hourly.csv`)
 
-### Inputs and Outputs
+### Entrées et sorties
 
-The hourly sales generation script loads:
+Le script de génération ventes horaires charge :
 
-- Stores and cluster configuration (not shown in the snippet but implied by references to `stores`). Sources: [07_generate_hourly_sales.py:35-40]()
-- Local events from `local_events.csv`. Sources: [07_generate_hourly_sales.py:21-36]()
-- Calendar from `calendar_hourly.csv` (used via `cal` rows). Sources: [07_generate_hourly_sales.py:21-36]()
-- Product master data from `finished_products.csv` (implied by `product_id`, `product_name`, `category`, `is_menu`). Sources: [07_generate_hourly_sales.py:35-40]()
+- Configuration magasins et clusters (non visible dans l'extrait mais implicite par références `magasins`). Sources : [07_generate_hourly_sales.py:35-40]()
+- Événements locaux depuis `local_events.csv`. Sources : [07_generate_hourly_sales.py:21-36]()
+- Calendrier depuis `calendar_hourly.csv` (utilisé via lignes `cal`). Sources : [07_generate_hourly_sales.py:21-36]()
+- Données maîtres produits depuis `produits_finis.csv` (implicite par `product_id`, `product_name`, `category`, `is_menu`). Sources : [07_generate_hourly_sales.py:35-40]()
 
-It outputs `fact_sales_hourly.csv` with at least these fields:
+Il génère `fact_sales_hourly.csv` avec au moins ces champs :
 
 - `store_id`, `date`, `hour`, `datetime_hour`.
-- `day_of_week`, `is_weekend`, `is_wednesday`, `is_school_holiday`, `is_fair_period`, `is_fair_peak_weekend`. Sources: [07_generate_hourly_sales.py:21-36]()
+- `jour_semaine`, `est_weekend`, `est_mercredi`, `est_vacances_scolaires`, `est_periode_fete`, `est_weekend_pic_fete`. Sources : [07_generate_hourly_sales.py:21-36]()
 - `product_id`, `product_name`, `category`, `is_menu`.
 - `qty_sold`, `unit_price`, `revenue`.
-- `hour_multiplier`, `day_multiplier`, `event_multiplier`. Sources: [07_generate_hourly_sales.py:21-40]()
+- `hour_multiplier`, `day_multiplier`, `event_multiplier`. Sources : [07_generate_hourly_sales.py:21-40]()
 
-Example of row construction:
+Exemple de construction de ligne :
 
 ```python
 rows.append({
@@ -234,12 +234,12 @@ rows.append({
     "date": cal["date"],
     "hour": hour,
     "datetime_hour": cal["datetime_hour"],
-    "day_of_week": cal["day_of_week"],
-    "is_weekend": int(cal["is_weekend"]),
-    "is_wednesday": int(cal["is_wednesday"]),
-    "is_school_holiday": int(cal["is_school_holiday"]),
-    "is_fair_period": int(cal["is_fair_period"]),
-    "is_fair_peak_weekend": int(cal["is_fair_peak_weekend"]),
+    "jour_semaine": cal["jour_semaine"],
+    "est_weekend": int(cal["est_weekend"]),
+    "est_mercredi": int(cal["est_mercredi"]),
+    "est_vacances_scolaires": int(cal["est_vacances_scolaires"]),
+    "est_periode_fete": int(cal["est_periode_fete"]),
+    "est_weekend_pic_fete": int(cal["est_weekend_pic_fete"]),
     "product_id": product_id,
     "product_name": product_name,
     "category": category,
@@ -253,97 +253,97 @@ rows.append({
 })
 ```
 
-Sources: [07_generate_hourly_sales.py:21-40]()
+Sources : [07_generate_hourly_sales.py:21-40]()
 
-`fact_sales_hourly.csv` is then exported and basic summary metrics (row count, total volume, total revenue) are printed. Sources: [07_generate_hourly_sales.py:33-40](), [fact_sales_hourly.csv]()
+`fact_sales_hourly.csv` est ensuite exporté et les métriques résumées basiques (nombre de lignes, volume total, revenu total) sont affichées. Sources : [07_generate_hourly_sales.py:33-40](), [fact_sales_hourly.csv]()
 
-### Hourly, Daily, and Event Multipliers
+### Multiplicateurs horaires, quotidiens et événementiels
 
-The script defines three key multiplier functions:
+Le script définit trois fonctions multiplicateurs clés :
 
-- `hour_multiplier(hour, is_weekend, is_fair_period, is_fair_peak_weekend)`:
-  - Increases base demand in specific hour ranges (e.g., 11–14 lunch, 18–20 evening).
-  - Applies uplift for weekends and fair periods. Sources: [07_generate_hourly_sales.py:1-20]()
+- `heure_multiplicateur(heure, est_weekend, est_periode_fete, est_weekend_pic_fete)` :
+  - Augmente la demande de base en plages horaires spécifiques (ex. 11–14 déjeuner, 18–20 soirée).
+  - Applique augmentation pour weekends et périodes de fête. Sources : [07_generate_hourly_sales.py:1-20]()
 
-- `day_multiplier(day_of_week, is_weekend, is_school_holiday)`:
-  - Applies multiplicative factors by weekday (e.g., Wednesday, Friday, Saturday, Sunday).
-  - Adds uplift if `is_school_holiday == 1`. Sources: [07_generate_hourly_sales.py:20-31]()
+- `jour_multiplicateur(jour_semaine, est_weekend, est_vacances_scolaires)` :
+  - Applique facteurs multiplicatifs par jour semaine (ex. mercredi, vendredi, samedi, dimanche).
+  - Ajoute augmentation si `est_vacances_scolaires == 1`. Sources : [07_generate_hourly_sales.py:20-31]()
 
-- `event_multiplier(store_id, current_date, hour)`:
-  - Iterates over rows in `local_events`.
-  - Checks if the date is between `start_date` and `end_date` and hour is in `active_hours`.
-  - If event targets the current store, multiplies by `(1 + traffic_uplift_pct)`.
-  - Otherwise, if `traffic_downlift_pct_other_store != 0`, applies this percentage.
-  - Ensures minimum uplift `0.05`. Sources: [07_generate_hourly_sales.py:31-40]()
+- `evenement_multiplicateur(store_id, date_actuelle, heure)` :
+  - Itère sur lignes `local_events`.
+  - Vérifie si date est entre `start_date` et `end_date` et heure est dans `active_hours`.
+  - Si événement cible magasin actuel, multiplie par `(1 + traffic_uplift_pct)`.
+  - Sinon, si `traffic_downlift_pct_other_store != 0`, applique ce pourcentage.
+  - Assure augmentation minimale `0.05`. Sources : [07_generate_hourly_sales.py:31-40]()
 
 ```python
-def event_multiplier(store_id, current_date, hour):
-    uplift = 1.0
+def evenement_multiplicateur(store_id, date_actuelle, heure):
+    augmentation = 1.0
 
     for _, event in local_events.iterrows():
         start_date = pd.to_datetime(event["start_date"]).date()
         end_date = pd.to_datetime(event["end_date"]).date()
         active_hours = [int(x) for x in str(event["active_hours"]).split(",")]
 
-        if start_date <= current_date <= end_date and hour in active_hours:
+        if start_date <= date_actuelle <= end_date and heure in active_hours:
             if event["target_store_id"] == store_id:
-                uplift *= (1 + event["traffic_uplift_pct"])
+                augmentation *= (1 + event["traffic_uplift_pct"])
             else:
                 if event["traffic_downlift_pct_other_store"] != 0:
-                    uplift *= (1 + event["traffic_downlift_pct_other_store"])
+                    augmentation *= (1 + event["traffic_downlift_pct_other_store"])
 
-    return max(uplift, 0.05)
+    return max(augmentation, 0.05)
 ```
 
-Sources: [07_generate_hourly_sales.py:31-40]()
+Sources : [07_generate_hourly_sales.py:31-40]()
 
-### Store Base Demand
+### Demande de base par magasin
 
-A simple store base demand configuration is defined as a dictionary:
+Une configuration simple demande de base magasin est définie comme dictionnaire :
 
 ```python
 store_base_lambda = {
-    "S001": 22,  # Dreux centre ville
+    "S001": 22,  # Dreux centre-ville
     "S002": 25,  # Vernouillet / haut de ville
 }
 ```
 
-Sources: [07_generate_hourly_sales.py:40-45]()
+Sources : [07_generate_hourly_sales.py:40-45]()
 
-This base index is later used when generating Poisson‑like demand per store and hour (generation logic not fully shown in the snippet). Sources: [07_generate_hourly_sales.py:35-45]()
+Cet index de base est utilisé ultérieurement lors de la génération demande Poisson-like par magasin et heure (logique génération non entièrement visible dans l'extrait). Sources : [07_generate_hourly_sales.py:35-45]()
 
-### Sales Analysis Utilities
+### Utilitaires d'analyse ventes
 
-A separate script `08_analyze_sales_patterns.py` reads `fact_sales_hourly.csv` to:
+Un script séparé `08_analyze_sales_patterns.py` lit `fact_sales_hourly.csv` pour :
 
-- Aggregate total sales by store.
-- Aggregate sales by hour.
-- Compare lunch vs evening sales for store `S001`.
-- Compare fair vs non‑fair periods by store.
-- Identify top products by total quantity.
-- Aggregate by `day_of_week` and order weekdays in logical order. Sources: [08_analyze_sales_patterns.py:3-60]()
+- Agréger ventes totales par magasin.
+- Agréger ventes par heure.
+- Comparer ventes déjeuner vs soirée pour magasin `S001`.
+- Comparer périodes fête vs hors-fête par magasin.
+- Identifier produits top par quantité totale.
+- Agréger par `jour_semaine` et ordonner jours logiquement. Sources : [08_analyze_sales_patterns.py:3-60]()
 
-This script does not modify data but provides diagnostic and exploratory summaries.
+Ce script ne modifie pas données mais fournit résumés diagnostiques et exploratoires.
 
 ---
 
-## Sales Explosion to Component Demand
+## Explosion des ventes vers demande de composants
 
-### Menu Expansion and Exploded Product Demand
+### Expansion menu et demande explodée produits
 
-`09_explode_sales_to_components.py` takes hourly sales and converts them into:
+`09_explode_sales_to_components.py` prend ventes horaires et les convertit en :
 
-1. Exploded products (e.g., menu -> burger + fries + drink).
-2. Component demand via the BOM.
+1. Produits explodés (ex. menu -> burger + frites + boisson).
+2. Demande composants via la BOM.
 
-Inputs:
+Entrées :
 
-- `fact_sales_hourly.csv` as `sales`.
-- `bom_recipes.csv` as `bom`.
-- `finished_products.csv` as finished product catalog.
-- `components.csv` as component catalog. Sources: [09_explode_sales_to_components.py:120-150]()
+- `fact_sales_hourly.csv` comme `ventes`.
+- `recettes_bom.csv` comme `bom`.
+- `produits_finis.csv` comme catalogue produits finis.
+- `composants.csv` comme catalogue composants. Sources : [09_explode_sales_to_components.py:120-150]()
 
-A `menu_rules` DataFrame hard‑codes the decomposition of menu products:
+Un DataFrame `menu_rules` code dur la décomposition produits menu :
 
 ```python
 menu_rules = pd.DataFrame([
@@ -352,42 +352,42 @@ menu_rules = pd.DataFrame([
         "menu_product_name": "Menu Big Mac",
         "main_product_id": "P001",
         "main_product_name": "Big Mac",
-        "fries_m_share": 0.75,
-        "fries_l_share": 0.05,
-        "other_side_share": 0.20,
-        "coke_m_share": 0.75,
-        "coke_l_share": 0.05,
-        "other_drink_share": 0.20,
+        "frites_m_part": 0.75,
+        "frites_l_part": 0.05,
+        "autre_accompagnement_part": 0.20,
+        "coca_m_part": 0.75,
+        "coca_l_part": 0.05,
+        "autre_boisson_part": 0.20,
     },
     {
         "menu_product_id": "P015",
         "menu_product_name": "Menu McChicken",
         "main_product_id": "P003",
         "main_product_name": "McChicken",
-        "fries_m_share": 0.75,
-        "fries_l_share": 0.05,
-        "other_side_share": 0.20,
-        "coke_m_share": 0.75,
-        "coke_l_share": 0.05,
-        "other_drink_share": 0.20,
+        "frites_m_part": 0.75,
+        "frites_l_part": 0.05,
+        "autre_accompagnement_part": 0.20,
+        "coca_m_part": 0.75,
+        "coca_l_part": 0.05,
+        "autre_boisson_part": 0.20,
     },
 ])
 ```
 
-Sources: [09_explode_sales_to_components.py:120-145]()
+Sources : [09_explode_sales_to_components.py:120-145]()
 
-Helper maps from product names to IDs are built using `finished_products.csv`. Specific product names such as `"Big Mac"`, `"McChicken"`, `"Frites M"`, `"Frites L"`, `"Coca M"`, `"Coca L"` are mapped to IDs. Sources: [09_explode_sales_to_components.py:145-160]()
+Des mappages auxiliaires de noms produits vers IDs sont construits à partir `produits_finis.csv`. Noms produits spécifiques comme `"Big Mac"`, `"McChicken"`, `"Frites M"`, `"Frites L"`, `"Coca M"`, `"Coca L"` sont mappés [...]
 
-For each row in `sales`:
+Pour chaque ligne `ventes` :
 
-- If `is_menu == 0`, the product is appended directly as an exploded row with `exploded_product_id == product_id` and `exploded_qty == qty_sold`. Sources: [09_explode_sales_to_components.py:160-180]()
-- If `is_menu == 1`, the script:
-  - Looks up the `menu_rule` by `menu_product_id`.
-  - Adds one row for the main burger with `exploded_qty == qty_sold`.
-  - Adds rows for medium and large fries based on `fries_m_share` and `fries_l_share`.
-  - Adds rows for medium and large Coke based on `coke_m_share` and `coke_l_share`. Sources: [09_explode_sales_to_components.py:180-240]()
+- Si `is_menu == 0`, le produit est ajouté directement comme ligne explodée avec `product_id_explode == product_id` et `qty_explode == qty_sold`. Sources : [09_explode_sales_to_components.py:160-180]()
+- Si `is_menu == 1`, le script :
+  - Cherche `menu_rule` par `menu_product_id`.
+  - Ajoute ligne pour burger principal avec `qty_explode == qty_sold`.
+  - Ajoute lignes frites medium et large basées sur `frites_m_part` et `frites_l_part`.
+  - Ajoute lignes Coca medium et large basées sur `coca_m_part` et `coca_l_part`. Sources : [09_explode_sales_to_components.py:180-240]()
 
-Example snippet for non‑menu products:
+Extrait exemple pour produits non-menu :
 
 ```python
 if row["is_menu"] == 0:
@@ -396,52 +396,52 @@ if row["is_menu"] == 0:
         "date": date,
         "hour": hour,
         "datetime_hour": datetime_hour,
-        "source_product_id": product_id,
-        "source_product_name": product_name,
-        "exploded_product_id": product_id,
-        "exploded_product_name": product_name,
-        "exploded_qty": qty_sold
+        "product_id_source": product_id,
+        "product_name_source": product_name,
+        "product_id_explode": product_id,
+        "product_name_explode": product_name,
+        "qty_explode": qty_sold
     })
     continue
 ```
 
-Sources: [09_explode_sales_to_components.py:160-180]()
+Sources : [09_explode_sales_to_components.py:160-180]()
 
-Exploded rows are aggregated:
+Les lignes explodées sont agrégées :
 
 ```python
 expanded_sales = pd.DataFrame(expanded_rows)
 
-exploded_product_demand = (
+demande_produit_explode = (
     expanded_sales
     .groupby(
-        ["store_id", "date", "hour", "datetime_hour", "exploded_product_id", "exploded_product_name"],
+        ["store_id", "date", "hour", "datetime_hour", "product_id_explode", "product_name_explode"],
         as_index=False
-    )["exploded_qty"]
+    )["qty_explode"]
     .sum()
 )
 
-exploded_product_demand.to_csv(data_dir / "exploded_product_demand.csv", index=False)
+demande_produit_explode.to_csv(data_dir / "demande_produit_explode.csv", index=False)
 ```
 
-Sources: [09_explode_sales_to_components.py:200-220]()
+Sources : [09_explode_sales_to_components.py:200-220]()
 
-### Component Demand via BOM
+### Demande composants via BOM
 
-For each exploded product:
+Pour chaque produit explodé :
 
-- `matching_bom = bom[bom["product_id"] == exploded_product_id]`.
-- For each matching BOM row, the script computes:
-  - `qty_component_needed = exploded_qty * qty_per_product`. Sources: [09_explode_sales_to_components.py:220-245]()
+- `matching_bom = bom[bom["product_id"] == product_id_explode]`.
+- Pour chaque ligne BOM correspondante, le script calcule :
+  - `qty_composant_necessaire = qty_explode * qty_par_produit`. Sources : [09_explode_sales_to_components.py:220-245]()
 
 ```python
 component_rows = []
 
-for _, sale_row in exploded_product_demand.iterrows():
-    exploded_product_id = sale_row["exploded_product_id"]
-    exploded_qty = float(sale_row["exploded_qty"])
+for _, sale_row in demande_produit_explode.iterrows():
+    product_id_explode = sale_row["product_id_explode"]
+    qty_explode = float(sale_row["qty_explode"])
 
-    matching_bom = bom[bom["product_id"] == exploded_product_id]
+    matching_bom = bom[bom["product_id"] == product_id_explode]
 
     for _, bom_row in matching_bom.iterrows():
         component_rows.append({
@@ -449,52 +449,52 @@ for _, sale_row in exploded_product_demand.iterrows():
             "date": sale_row["date"],
             "hour": sale_row["hour"],
             "datetime_hour": sale_row["datetime_hour"],
-            "product_id": exploded_product_id,
-            "product_name": sale_row["exploded_product_name"],
+            "product_id": product_id_explode,
+            "product_name": sale_row["product_name_explode"],
             "component_id": bom_row["component_id"],
-            "qty_component_needed": exploded_qty * float(bom_row["qty_per_product"])
+            "qty_composant_necessaire": qty_explode * float(bom_row["qty_par_produit"])
         })
 ```
 
-Sources: [09_explode_sales_to_components.py:220-245]()
+Sources : [09_explode_sales_to_components.py:220-245]()
 
-Component demand is then aggregated and enriched:
+La demande composants est ensuite agrégée et enrichie :
 
-- Grouped by `["store_id", "date", "hour", "datetime_hour", "component_id"]` summing `qty_component_needed`.
-- Enriched by joining with `components` on `component_id` to bring `component_name`, `component_type`, `storage_zone`, `unit_type`. Sources: [09_explode_sales_to_components.py:245-270]()
+- Groupée par `["store_id", "date", "hour", "datetime_hour", "component_id"]` en sommant `qty_composant_necessaire`.
+- Enrichie en joignant avec `composants` sur `component_id` pour apporter `component_name`, `component_type`, `zone_stockage`, `type_unite`. Sources : [09_explode_sales_to_components.py:245-270]()
 
 ```python
-component_demand = (
-    component_demand
+demande_composant = (
+    demande_composant
     .groupby(
         ["store_id", "date", "hour", "datetime_hour", "component_id"],
         as_index=False
-    )["qty_component_needed"]
+    )["qty_composant_necessaire"]
     .sum()
 )
 
-component_demand = component_demand.merge(
-    components[["component_id", "component_name", "component_type", "storage_zone", "unit_type"]],
+demande_composant = demande_composant.merge(
+    composants[["component_id", "component_name", "component_type", "zone_stockage", "type_unite"]],
     on="component_id",
     how="left"
 )
 
-component_demand.to_csv(data_dir / "component_hourly_demand.csv", index=False)
+demande_composant.to_csv(data_dir / "demande_composant_horaire.csv", index=False)
 ```
 
-Sources: [09_explode_sales_to_components.py:245-270](), [component_hourly_demand.csv]()
+Sources : [09_explode_sales_to_components.py:245-270](), [demande_composant_horaire.csv]()
 
-### Explosion Flow Diagram
+### Diagramme flux explosion
 
 ```mermaid
 graph TD
-  SalesFact["fact_sales\nhourly"]
-  MenuRules["menu\nrules"]
-  Finished["finished\nproducts"]
-  BOM["bom\nrecipes"]
-  Components["components"]
-  Exploded["exploded\nproduct\ndemand.csv"]
-  CompDemand["component\nhourly\nDemand.csv"]
+  SalesFact["ventes\nhoraires\nfaits"]
+  MenuRules["règles\nmenu"]
+  Finished["produits\nfinis"]
+  BOM["recettes\nbom"]
+  Components["composants"]
+  Exploded["demande\nproduit\nexplodée"]
+  CompDemand["demande\ncomposant\nhoraire"]
 
   SalesFact --> Exploded
   MenuRules --> Exploded
@@ -504,274 +504,274 @@ graph TD
   Components --> CompDemand
 ```
 
-Sources: [09_explode_sales_to_components.py:120-270](), [fact_sales_hourly.csv](), [component_hourly_demand.csv]()
+Sources : [09_explode_sales_to_components.py:120-270](), [fact_sales_hourly.csv](), [demande_composant_horaire.csv]()
 
 ---
 
-## Inventory Simulation and Replenishment (`inventory_replenishment_daily.csv`)
+## Simulation d'inventaire et réapprovisionnement (`inventory_replenishment_daily.csv`)
 
-### Inputs and Daily Demand Aggregation
+### Entrées et agrégation demande quotidienne
 
-`10_generate_inventory_and_replenishment.py` operates on a daily aggregation of `component_hourly_demand.csv` plus component attributes such as `units_per_case`, `storage_zone`, `unit_cost`, `waste_ratio_ops`, `waste_ratio_dlc`. These are joined into a `daily_demand` DataFrame grouped by `["store_id", "component_id"]`. Sources: [10_generate_inventory_and_replenishment.py:40-60](), [component_hourly_demand.csv]()
+`10_generate_inventory_and_replenishment.py` fonctionne sur agrégation quotidienne `demande_composant_horaire.csv` plus attributs composants tels que `unites_par_case`, `zone_stockage`, `cout_unitaire`, `ratio_perte_[...]
 
-For each `(store_id, component_id)` group, sorted by date:
+Pour chaque groupe `(store_id, component_id)`, trié par date :
 
-- `avg_daily_demand = grp["daily_component_demand"].mean()`.
-- `units_per_case`, `storage_zone`, `unit_cost`, `waste_ratio_ops`, `waste_ratio_dlc` are extracted from the first row. Sources: [10_generate_inventory_and_replenishment.py:40-55]()
+- `demande_quotidienne_moyenne = grp["demande_composant_quotidienne"].mean()`.
+- `unites_par_case`, `zone_stockage`, `cout_unitaire`, `ratio_perte_ops`, `ratio_perte_dlc` sont extraits de première ligne. Sources : [10_generate_inventory_and_replenishment.py:40-55]()
 
-### Policy Functions
+### Fonctions de politique
 
-Three helper functions define inventory parameters by storage zone:
+Trois fonctions auxiliaires définissent paramètres inventaire par zone stockage :
 
 ```python
-def lead_time_days(storage_zone):
-    if storage_zone == "negative":
+def delai_approvisionnement_jours(zone_stockage):
+    if zone_stockage == "negatif":
         return 2
-    if storage_zone == "cold":
+    if zone_stockage == "froid":
         return 2
-    if storage_zone == "dry":
+    if zone_stockage == "sec":
         return 3
     return 2
 
-def target_cover_days(storage_zone):
-    if storage_zone == "negative":
+def jours_couverture_cible(zone_stockage):
+    if zone_stockage == "negatif":
         return 3
-    if storage_zone == "cold":
+    if zone_stockage == "froid":
         return 4
-    if storage_zone == "dry":
+    if zone_stockage == "sec":
         return 5
     return 4
 
-def safety_factor(storage_zone):
-    if storage_zone == "negative":
+def facteur_securite(zone_stockage):
+    if zone_stockage == "negatif":
         return 0.35
-    if storage_zone == "cold":
+    if zone_stockage == "froid":
         return 0.30
-    if storage_zone == "dry":
+    if zone_stockage == "sec":
         return 0.25
     return 0.30
 ```
 
-Sources: [10_generate_inventory_and_replenishment.py:2-25]()
+Sources : [10_generate_inventory_and_replenishment.py:2-25]()
 
-### Stock Simulation Logic
+### Logique simulation stock
 
-For each component and store:
+Pour chaque composant et magasin :
 
-1. Compute:
+1. Calculer :
 
-   - `demand_std` as standard deviation of `daily_component_demand` (0 if NaN).
-   - `safety_stock_units = avg_daily_demand * sf + demand_std * 0.5`.
-   - `reorder_point_units = avg_daily_demand * lt_days + safety_stock_units`.
-   - `target_stock_units = avg_daily_demand * cover_days + safety_stock_units`. Sources: [10_generate_inventory_and_replenishment.py:40-60]()
+   - `demande_std` comme écart-type `demande_composant_quotidienne` (0 si NaN).
+   - `stock_securite_unites = demande_quotidienne_moyenne * fs + demande_std * 0.5`.
+   - `point_recom_unites = demande_quotidienne_moyenne * delai_approv + stock_securite_unites`.
+   - `stock_cible_unites = demande_quotidienne_moyenne * jours_couverture + stock_securite_unites`. Sources : [10_generate_inventory_and_replenishment.py:40-60]()
 
-2. Initial `current_stock_units`:
+2. `stock_actuel_unites` initial :
 
-   - Set to `max(target_stock_units, avg_daily_demand * 2)`. Sources: [10_generate_inventory_and_replenishment.py:55-60]()
+   - Fixé à `max(stock_cible_unites, demande_quotidienne_moyenne * 2)`. Sources : [10_generate_inventory_and_replenishment.py:55-60]()
 
-3. For each date row:
+3. Pour chaque ligne date :
 
-   - Compute `daily_component_demand`, `waste_ops_units`, `waste_dlc_units`.
-   - Total outflow: `total_outflow_units = daily_component_demand + waste_ops_units + waste_dlc_units`.
-   - `opening_stock_units = current_stock_units`.
-   - `closing_stock_pre_order_units = opening_stock_units - total_outflow_units`. Sources: [10_generate_inventory_and_replenishment.py:60-80]()
+   - Calculer `demande_composant_quotidienne`, `perte_ops_unites`, `perte_dlc_unites`.
+   - Flux sortant total : `flux_sortant_total_unites = demande_composant_quotidienne + perte_ops_unites + perte_dlc_unites`.
+   - `stock_ouverture_unites = stock_actuel_unites`.
+   - `stock_fermeture_pre_commande_unites = stock_ouverture_unites - flux_sortant_total_unites`. Sources : [10_generate_inventory_and_replenishment.py:60-80]()
 
-4. Flags:
+4. Drapeaux :
 
-   - `stockout_risk_flag`, `low_stock_flag`, `waste_risk_flag` (criteria not fully shown in snippet but computed per row and stored). Sources: [10_generate_inventory_and_replenishment.py:60-100]()
+   - `drapeau_risque_rupture`, `drapeau_stock_bas`, `drapeau_risque_perte` (critères non entièrement visibles dans extrait mais calculés par ligne et enregistrés). Sources : [10_generate_inventory_and_replenishment.py:60-100]()
 
-5. Recommended order:
+5. Commande recommandée :
 
-   - `order_recommended_units` is rounded value computed against target and reorder level (implementation partially shown).
-   - `order_recommended_cases` is cases equivalent based on `units_per_case`.
-   - `closing_stock_post_order_units` accounts for incoming orders. Sources: [10_generate_inventory_and_replenishment.py:60-100]()
+   - `unites_commande_recommandees` est valeur arrondie calculée selon cible et niveau réapprovisionnement (implémentation partiellement visible).
+   - `cases_commande_recommandees` est équivalent cases basé sur `unites_par_case`.
+   - `stock_fermeture_post_commande_unites` tient compte des commandes entrantes. Sources : [10_generate_inventory_and_replenishment.py:60-100]()
 
-6. Row is appended to `results` with all computed values including `recommended_order_value = order_recommended_units * unit_cost`. Sources: [10_generate_inventory_and_replenishment.py:80-110]()
+6. Ligne ajoutée `resultats` avec toutes valeurs calculées incluant `valeur_commande_recommandee = unites_commande_recommandees * cout_unitaire`. Sources : [10_generate_inventory_and_replenishment.py:80-110]()
 
-Finally, `inventory_replenishment_daily.csv` is created with all simulated inventory and order recommendation fields. Sources: [10_generate_inventory_and_replenishment.py:100-120](), [inventory_replenishment_daily.csv]()
+Finalement, `inventory_replenishment_daily.csv` est créé avec tous champs simulés inventaire et recommandation commande. Sources : [10_generate_inventory_and_replenishment.py:100-120](), [inventory_replen[...]
 
-### Inventory Record Fields
+### Champs enregistrement inventaire
 
-`inventory_replenishment_daily.csv` contains at least:
+`inventory_replenishment_daily.csv` contient au minimum :
 
-- Identification: `store_id`, `date`, `component_id`.
-- Demand: `daily_component_demand`, `avg_daily_demand`, `demand_std`.
-- Stock: `opening_stock_units`, `closing_stock_pre_order_units`, `closing_stock_post_order_units`.
-- Policy: `lead_time_days`, `safety_stock_units`, `reorder_point_units`, `target_stock_units`.
-- Orders: `order_recommended_units`, `order_recommended_cases`, `recommended_order_value`.
-- Flags: `stockout_risk_flag`, `low_stock_flag`, `waste_risk_flag`. Sources: [10_generate_inventory_and_replenishment.py:60-110](), [inventory_replenishment_daily.csv]()
+- Identification : `store_id`, `date`, `component_id`.
+- Demande : `demande_composant_quotidienne`, `demande_quotidienne_moyenne`, `demande_std`.
+- Stock : `stock_ouverture_unites`, `stock_fermeture_pre_commande_unites`, `stock_fermeture_post_commande_unites`.
+- Politique : `delai_approvisionnement_jours`, `stock_securite_unites`, `point_recom_unites`, `stock_cible_unites`.
+- Commandes : `unites_commande_recommandees`, `cases_commande_recommandees`, `valeur_commande_recommandee`.
+- Drapeaux : `drapeau_risque_rupture`, `drapeau_stock_bas`, `drapeau_risque_perte`. Sources : [10_generate_inventory_and_replenishment.py:60-110](), [inventory_replenishment_daily.csv]()
 
 ---
 
-## Advanced Order Recommendations (`order_recommendations.csv`)
+## Recommandations commande avancées (`order_recommendations.csv`)
 
-### Type Cleaning and Base Preparation
+### Nettoyage types et préparation base
 
-`11_generate_order_recommendations.py` refines the basic replenishment output.
+`11_generate_order_recommendations.py` affine sortie réapprovisionnement basique.
 
-It loads:
+Charge :
 
-- `inventory_replenishment_daily.csv` as `inventory`.
-- `components.csv` as `components`. Sources: [11_generate_order_recommendations.py:1-20]()
+- `inventory_replenishment_daily.csv` comme `inventaire`.
+- `composants.csv` comme `composants`. Sources : [11_generate_order_recommendations.py:1-20]()
 
-It coerces several columns to numeric types (if present) and converts `inventory["date"]` to datetime. Sources: [11_generate_order_recommendations.py:20-45]()
+Coerce plusieurs colonnes vers types numériques (si présentes) et convertit `inventaire["date"]` vers datetime. Sources : [11_generate_order_recommendations.py:20-45]()
 
-### 3‑Day Demand Forecast
+### Prévision demande 3 jours
 
-The script computes a naïve rolling forecast of the next 3 days for each `(store_id, component_id)`:
+Le script calcule prévision naïve roulante 3 jours suivants pour chaque `(store_id, component_id)` :
 
 ```python
-inventory = inventory.sort_values(["store_id", "component_id", "date"]).copy()
+inventaire = inventaire.sort_values(["store_id", "component_id", "date"]).copy()
 
-inventory["forecast_d1"] = inventory.groupby(["store_id", "component_id"])["daily_component_demand"].shift(-1)
-inventory["forecast_d2"] = inventory.groupby(["store_id", "component_id"])["daily_component_demand"].shift(-2)
-inventory["forecast_d3"] = inventory.groupby(["store_id", "component_id"])["daily_component_demand"].shift(-3)
+inventaire["prevision_j1"] = inventaire.groupby(["store_id", "component_id"])["demande_composant_quotidienne"].shift(-1)
+inventaire["prevision_j2"] = inventaire.groupby(["store_id", "component_id"])["demande_composant_quotidienne"].shift(-2)
+inventaire["prevision_j3"] = inventaire.groupby(["store_id", "component_id"])["demande_composant_quotidienne"].shift(-3)
 
-inventory[["forecast_d1", "forecast_d2", "forecast_d3"]] = inventory[
-    ["forecast_d1", "forecast_d2", "forecast_d3"]
+inventaire[["prevision_j1", "prevision_j2", "prevision_j3"]] = inventaire[
+    ["prevision_j1", "prevision_j2", "prevision_j3"]
 ].fillna(0)
 
-inventory["forecast_next_3d"] = (
-    inventory["forecast_d1"] + inventory["forecast_d2"] + inventory["forecast_d3"]
+inventaire["prevision_3j"] = (
+    inventaire["prevision_j1"] + inventaire["prevision_j2"] + inventaire["prevision_j3"]
 )
 ```
 
-Sources: [11_generate_order_recommendations.py:45-65]()
+Sources : [11_generate_order_recommendations.py:45-65]()
 
-`current_stock_units` is set to `closing_stock_post_order_units` (or 0 if NaN). Sources: [11_generate_order_recommendations.py:65-75]()
+`stock_actuel_unites` est fixé à `stock_fermeture_post_commande_unites` (ou 0 si NaN). Sources : [11_generate_order_recommendations.py:65-75]()
 
-### Recommended Order Logic (v2)
+### Logique recommandation commande (v2)
 
-A new recommendation function `compute_recommended_units` is applied per row:
+Une nouvelle fonction recommandation `calcul_unites_recommandees` est appliquée par ligne :
 
 ```python
-def compute_recommended_units(row):
-    current_stock = row["current_stock_units"]
-    reorder_point = row["reorder_point_units"]
-    target_stock = row["target_stock_units"]
-    forecast_3d = row["forecast_next_3d"]
-    units_per_case = row["units_per_case"]
+def calcul_unites_recommandees(row):
+    stock_actuel = row["stock_actuel_unites"]
+    point_recom = row["point_recom_unites"]
+    stock_cible = row["stock_cible_unites"]
+    prevision_3j = row["prevision_3j"]
+    unites_par_case = row["unites_par_case"]
 
-    if pd.isna(units_per_case) or units_per_case <= 0:
-        units_per_case = 1
+    if pd.isna(unites_par_case) or unites_par_case <= 0:
+        unites_par_case = 1
 
-    # Base need:
-    # - if below reorder point, replenish up to target
-    # - if next 3 days forecast is above current stock, cover shortage too
-    replenish_gap = max(target_stock - current_stock, 0)
-    forecast_gap = max(forecast_3d - current_stock, 0)
+    # Besoin base :
+    # - si dessous point réapprovisionnement, reconstituer jusqu'à cible
+    # - si prévision 3j suivants au-dessus stock actuel, couvrir pénurie aussi
+    ecart_reconstitution = max(stock_cible - stock_actuel, 0)
+    ecart_prevision = max(prevision_3j - stock_actuel, 0)
 
-    raw_need = max(replenish_gap, forecast_gap)
+    besoin_brut = max(ecart_reconstitution, ecart_prevision)
 
-    if raw_need <= 0:
+    if besoin_brut <= 0:
         return 0.0
 
-    # Round to case size
-    cases = np.ceil(raw_need / units_per_case)
-    return float(cases * units_per_case)
+    # Arrondir à taille case
+    cases = np.ceil(besoin_brut / unites_par_case)
+    return float(cases * unites_par_case)
 ```
 
-Sources: [11_generate_order_recommendations.py:75-105]()
+Sources : [11_generate_order_recommendations.py:75-105]()
 
-This yields:
+Ceci produit :
 
-- `recommended_order_units_v2`.
-- `recommended_order_cases_v2 = recommended_order_units_v2 / units_per_case`.
-- `recommended_order_value_v2 = recommended_order_units_v2 * unit_cost`. Sources: [11_generate_order_recommendations.py:100-115]()
+- `unites_commande_recommandees_v2`.
+- `cases_commande_recommandees_v2 = unites_commande_recommandees_v2 / unites_par_case`.
+- `valeur_commande_recommandee_v2 = unites_commande_recommandees_v2 * cout_unitaire`. Sources : [11_generate_order_recommendations.py:100-115]()
 
-### Urgency and Justification
+### Urgence et justification
 
-Urgency levels are computed with `compute_urgency`:
+Niveaux urgence calculés avec `calcul_urgence` :
 
 ```python
-def compute_urgency(row):
-    current_stock = row["current_stock_units"]
-    reorder_point = row["reorder_point_units"]
-    safety_stock = row["safety_stock_units"]
-    forecast_3d = row["forecast_next_3d"]
-    stockout_flag = row.get("stockout_risk_flag", 0)
-    low_stock_flag = row.get("low_stock_flag", 0)
+def calcul_urgence(row):
+    stock_actuel = row["stock_actuel_unites"]
+    point_recom = row["point_recom_unites"]
+    stock_securite = row["stock_securite_unites"]
+    prevision_3j = row["prevision_3j"]
+    drapeau_rupture = row.get("drapeau_risque_rupture", 0)
+    drapeau_stock_bas = row.get("drapeau_stock_bas", 0)
 
-    if current_stock <= 0 or stockout_flag == 1:
-        return "critical"
-    if current_stock < safety_stock:
-        return "high"
-    if current_stock < reorder_point or low_stock_flag == 1:
-        return "medium"
-    if forecast_3d > current_stock:
-        return "medium"
-    return "low"
+    if stock_actuel <= 0 or drapeau_rupture == 1:
+        return "critique"
+    if stock_actuel < stock_securite:
+        return "haute"
+    if stock_actuel < point_recom or drapeau_stock_bas == 1:
+        return "moyenne"
+    if prevision_3j > stock_actuel:
+        return "moyenne"
+    return "basse"
 ```
 
-Sources: [11_generate_order_recommendations.py:115-135]()
+Sources : [11_generate_order_recommendations.py:115-135]()
 
-A textual justification is built per row:
+Une justification textuelle est construite par ligne :
 
 ```python
-def build_justification(row):
-    reasons = []
+def construire_justification(row):
+    raisons = []
 
-    if row.get("stockout_risk_flag", 0) == 1:
-        reasons.append("stockout risk")
-    if row.get("low_stock_flag", 0) == 1:
-        reasons.append("below reorder threshold")
-    if row["current_stock_units"] < row["safety_stock_units"]:
-        reasons.append("below safety stock")
-    if row["forecast_next_3d"] > row["current_stock_units"]:
-        reasons.append("next 3d demand exceeds current stock")
-    if row.get("waste_risk_flag", 0) == 1:
-        reasons.append("monitor waste risk")
+    if row.get("drapeau_risque_rupture", 0) == 1:
+        raisons.append("risque rupture")
+    if row.get("drapeau_stock_bas", 0) == 1:
+        raisons.append("sous seuil réapprovisionnement")
+    if row["stock_actuel_unites"] < row["stock_securite_unites"]:
+        raisons.append("sous stock de sécurité")
+    if row["prevision_3j"] > row["stock_actuel_unites"]:
+        raisons.append("demande 3j suivants dépasse stock actuel")
+    if row.get("drapeau_risque_perte", 0) == 1:
+        raisons.append("surveiller risque perte")
 
-    if not reasons:
-        reasons.append("stable stock position")
+    if not raisons:
+        raisons.append("position stock stable")
 
-    return " | ".join(reasons)
+    return " | ".join(raisons)
 ```
 
-Sources: [11_generate_order_recommendations.py:135-160]()
+Sources : [11_generate_order_recommendations.py:135-160]()
 
-`inventory["urgency_level"]` and `inventory["justification"]` are filled accordingly. Sources: [11_generate_order_recommendations.py:115-160]()
+`inventaire["niveau_urgence"]` et `inventaire["justification"]` sont remplies en conséquence. Sources : [11_generate_order_recommendations.py:115-160]()
 
-### Output Selection and Sorting
+### Sélection sortie et tri
 
-The final output:
+Sortie finale :
 
-- Selects a subset of columns, renaming `*_v2` fields to final names.
-- Filters rows where `recommended_order_units > 0` or urgency is `critical`, `high`, or `medium`.
-- Converts `date` back to string `YYYY-MM-DD`.
-- Adds an `urgency_rank` for sorting.
-- Sorts by `["date", "urgency_rank", "store_id", "recommended_order_value"]` (value descending). Sources: [11_generate_order_recommendations.py:160-210]()
+- Sélectionne sous-ensemble colonnes, renommant champs `*_v2` vers noms finaux.
+- Filtre lignes où `unites_commande_recommandees > 0` ou urgence est `critique`, `haute` ou `moyenne`.
+- Convertit `date` retour chaîne `YYYY-MM-DD`.
+- Ajoute `classement_urgence` pour tri.
+- Trie par `["date", "classement_urgence", "store_id", "valeur_commande_recommandee"]` (valeur décroissante). Sources : [11_generate_order_recommendations.py:160-210]()
 
 ```python
-output_filtered = output[
-    (output["recommended_order_units"] > 0) | (output["urgency_level"].isin(["critical", "high", "medium"]))
+sortie_filtree = sortie[
+    (sortie["unites_commande_recommandees"] > 0) | (sortie["niveau_urgence"].isin(["critique", "haute", "moyenne"]))
 ].copy()
 
-urgency_order = {"critical": 1, "high": 2, "medium": 3, "low": 4}
-output_filtered["urgency_rank"] = output_filtered["urgency_level"].map(urgency_order)
+ordre_urgence = {"critique": 1, "haute": 2, "moyenne": 3, "basse": 4}
+sortie_filtree["classement_urgence"] = sortie_filtree["niveau_urgence"].map(ordre_urgence)
 
-output_filtered = output_filtered.sort_values(
-    ["date", "urgency_rank", "store_id", "recommended_order_value"],
+sortie_filtree = sortie_filtree.sort_values(
+    ["date", "classement_urgence", "store_id", "valeur_commande_recommandee"],
     ascending=[True, True, True, False]
-).drop(columns=["urgency_rank"])
+).drop(columns=["classement_urgence"])
 
-output_filtered.to_csv(OUTPUT_PATH, index=False)
+sortie_filtree.to_csv(CHEMIN_SORTIE, index=False)
 ```
 
-Sources: [11_generate_order_recommendations.py:160-210](), [order_recommendations.csv]()
+Sources : [11_generate_order_recommendations.py:160-210](), [order_recommendations.csv]()
 
-### Recommendation Flow Diagram
+### Diagramme flux recommandation
 
 ```mermaid
 graph TD
-  InvDaily["inventory\nreplenishment\nDaily.csv"]
-  Components["components.csv"]
-  Clean["type\ncleaning"]
-  Forecast["3d\ndemand\nforecast"]
-  PolicyV2["v2\norder\nlogic"]
-  Urgency["urgency\n&\njustification"]
-  FilterSort["filter\n& sort"]
-  Orders["order\nrecommen-\ndations.csv"]
+  InvDaily["inventaire\nréapprovision-\nquotidien"]
+  Components["composants"]
+  Clean["nettoyage\ntypes"]
+  Forecast["prévision\ndemande\n3j"]
+  PolicyV2["logique\ncommande\nv2"]
+  Urgency["urgence\net\njustification"]
+  FilterSort["filtrer\net trier"]
+  Orders["recomman-\ndation\ncommande"]
 
   InvDaily --> Clean
   Components --> Clean
@@ -782,94 +782,94 @@ graph TD
   FilterSort --> Orders
 ```
 
-Sources: [11_generate_order_recommendations.py:1-210](), [inventory_replenishment_daily.csv](), [order_recommendations.csv]()
+Sources : [11_generate_order_recommendations.py:1-210](), [inventory_replenishment_daily.csv](), [order_recommendations.csv]()
 
 ---
 
-## KPI Tables and Reporting
+## Tables KPI et reporting
 
-### Source Datasets
+### Ensembles données sources
 
-`11_build_kpi_tables.py` consumes:
+`11_build_kpi_tables.py` consomme :
 
-- `fact_sales_hourly.csv` as `sales`.
-- `inventory_replenishment_daily.csv` as `inventory`.
-- `component_hourly_demand.csv` as `component_demand`. Sources: [11_build_kpi_tables.py:1-15]()
+- `fact_sales_hourly.csv` comme `ventes`.
+- `inventory_replenishment_daily.csv` comme `inventaire`.
+- `component_hourly_demand.csv` comme `demande_composant`. Sources : [11_build_kpi_tables.py:1-15]()
 
-### KPI Tables
+### Tables KPI
 
-1. **Network Sales Summary** (`kpi_network_sales_summary.csv`):
+1. **Résumé ventes réseau** (`kpi_network_sales_summary.csv`) :
 
-   - Grouped by `store_id`.
-   - Aggregates `total_qty_sold = sum(qty_sold)`, `total_revenue = sum(revenue)`. Sources: [11_build_kpi_tables.py:15-25](), [kpi_network_sales_summary.csv]()
+   - Groupé par `store_id`.
+   - Agrège `total_qty_sold = sum(qty_sold)`, `total_revenue = sum(revenue)`. Sources : [11_build_kpi_tables.py:15-25](), [kpi_network_sales_summary.csv]()
 
-2. **Sales by Hour** (`kpi_sales_by_hour.csv`):
+2. **Ventes par heure** (`kpi_sales_by_hour.csv`) :
 
-   - Grouped by `hour`.
-   - Same two aggregated fields. Sources: [11_build_kpi_tables.py:25-35]()
+   - Groupé par `hour`.
+   - Mêmes deux champs agrégés. Sources : [11_build_kpi_tables.py:25-35]()
 
-3. **Top Products** (`kpi_top_products.csv`):
+3. **Produits top** (`kpi_top_products.csv`) :
 
-   - Grouped by `["store_id", "product_name"]`.
-   - Aggregates `total_qty_sold` and `total_revenue`.
-   - Sorted by `["store_id", "total_qty_sold"]` descending by quantity. Sources: [11_build_kpi_tables.py:35-50]()
+   - Groupé par `["store_id", "product_name"]`.
+   - Agrège `total_qty_sold` et `total_revenue`.
+   - Trié par `["store_id", "total_qty_sold"]` décroissant par quantité. Sources : [11_build_kpi_tables.py:35-50]()
 
-4. **Inventory KPI by Store** (`kpi_inventory_by_store.csv`):
+4. **KPI inventaire par magasin** (`kpi_inventory_by_store.csv`) :
 
-   - Grouped by `store_id`.
-   - Aggregated fields:
-     - `total_order_value = sum(recommended_order_value)`.
-     - `total_order_cases = sum(order_recommended_cases)`.
-     - `stockout_flags`, `low_stock_flags`, `waste_risk_flags` as sums of boolean flags. Sources: [11_build_kpi_tables.py:50-65]()
+   - Groupé par `store_id`.
+   - Champs agrégés :
+     - `total_order_value = sum(valeur_commande_recommandee)`.
+     - `total_order_cases = sum(cases_commande_recommandees)`.
+     - `drapeau_ruptures`, `drapeau_stock_bas`, `drapeau_risque_perte` comme sommes drapeaux booléens. Sources : [11_build_kpi_tables.py:50-65]()
 
-5. **Top Ordered Components** (`kpi_top_ordered_components.csv`):
+5. **Composants commandés top** (`kpi_top_ordered_components.csv`) :
 
-   - Grouped by `["store_id", "component_name"]`.
-   - Aggregates `total_order_units`, `total_order_cases`, `total_order_value`.
-   - Sorted by `["store_id", "total_order_value"]` descending. Sources: [11_build_kpi_tables.py:65-80]()
+   - Groupé par `["store_id", "component_name"]`.
+   - Agrège `total_order_units`, `total_order_cases`, `total_order_value`.
+   - Trié par `["store_id", "total_order_value"]` décroissant. Sources : [11_build_kpi_tables.py:65-80]()
 
-6. **Top Consumed Components** (`kpi_top_consumed_components.csv`):
+6. **Composants consommés top** (`kpi_top_consumed_components.csv`) :
 
-   - Grouped by `["store_id", "component_name", "storage_zone"]`.
-   - Aggregates `total_component_qty = sum(qty_component_needed)`.
-   - Sorted by `["store_id", "total_component_qty"]` descending. Sources: [11_build_kpi_tables.py:80-95]()
+   - Groupé par `["store_id", "component_name", "storage_zone"]`.
+   - Agrège `total_component_qty = sum(qty_composant_necessaire)`.
+   - Trié par `["store_id", "total_component_qty"]` décroissant. Sources : [11_build_kpi_tables.py:80-95]()
 
-7. **Daily Store KPI** (`kpi_daily_store_kpi.csv`):
+7. **KPI magasin quotidien** (`kpi_daily_store_kpi.csv`) :
 
-   - `daily_store_sales`: `sales` grouped by `["store_id", "date"]` with total quantity and revenue.
-   - `daily_store_inventory`: `inventory` grouped by `["store_id", "date"]` with total order value and aggregated flags.
-   - Merged on `["store_id", "date"]` via left join. Sources: [11_build_kpi_tables.py:95-125](), [kpi_daily_store_kpi.csv]()
+   - `ventes_magasin_quotidiennes` : `ventes` groupées par `["store_id", "date"]` avec quantité totale et revenu.
+   - `inventaire_magasin_quotidien` : `inventaire` groupé par `["store_id", "date"]` avec valeur commande totale et drapeaux agrégés.
+   - Fusionnés sur `["store_id", "date"]` via jointure gauche. Sources : [11_build_kpi_tables.py:95-125](), [kpi_daily_store_kpi.csv]()
 
-All KPI DataFrames are exported to their respective CSV files and printed to the console. Sources: [11_build_kpi_tables.py:95-140]()
+Tous DataFrames KPI sont exportés vers fichiers CSV respectifs et affichés console. Sources : [11_build_kpi_tables.py:95-140]()
 
-### KPI Summary Table
+### Tableau résumé KPI
 
-| KPI File | Granularity | Main Metrics | Source Fields |
+| Fichier KPI | Granularité | Métriques principales | Champs sources |
 |----------|-------------|--------------|---------------|
-| `kpi_network_sales_summary.csv` | Per store | `total_qty_sold`, `total_revenue` | `qty_sold`, `revenue` from `fact_sales_hourly.csv` |
-| `kpi_sales_by_hour.csv` | Per hour | `total_qty_sold`, `total_revenue` | `qty_sold`, `revenue` from `fact_sales_hourly.csv` |
-| `kpi_top_products.csv` | Per store & product | `total_qty_sold`, `total_revenue` | `product_name`, `qty_sold`, `revenue` |
-| `kpi_inventory_by_store.csv` | Per store | `total_order_value`, `total_order_cases`, `stockout_flags`, `low_stock_flags`, `waste_risk_flags` | From `inventory_replenishment_daily.csv` |
-| `kpi_top_ordered_components.csv` | Per store & component | `total_order_units`, `total_order_cases`, `total_order_value` | Order fields from `inventory_replenishment_daily.csv` |
-| `kpi_top_consumed_components.csv` | Per store, component, storage zone | `total_component_qty` | `qty_component_needed` from `component_hourly_demand.csv` |
-| `kpi_daily_store_kpi.csv` | Per store & date | Sales totals, order value, flags | From both `fact_sales_hourly.csv` and `inventory_replenishment_daily.csv` |
+| `kpi_network_sales_summary.csv` | Par magasin | `total_qty_sold`, `total_revenue` | `qty_sold`, `revenue` de `fact_sales_hourly.csv` |
+| `kpi_sales_by_hour.csv` | Par heure | `total_qty_sold`, `total_revenue` | `qty_sold`, `revenue` de `fact_sales_hourly.csv` |
+| `kpi_top_products.csv` | Par magasin & produit | `total_qty_sold`, `total_revenue` | `product_name`, `qty_sold`, `revenue` |
+| `kpi_inventory_by_store.csv` | Par magasin | `total_order_value`, `total_order_cases`, `drapeau_ruptures`, `drapeau_stock_bas`, `drapeau_risque_perte` | De `inventory_replenishment_daily.csv` |
+| `kpi_top_ordered_components.csv` | Par magasin & composant | `total_order_units`, `total_order_cases`, `total_order_value` | Champs commande de `inventory_replenishment_daily.csv` |
+| `kpi_top_consumed_components.csv` | Par magasin, composant, zone stockage | `total_component_qty` | `qty_composant_necessaire` de `component_hourly_demand.csv` |
+| `kpi_daily_store_kpi.csv` | Par magasin & date | Totaux ventes, valeur commande, drapeaux | De `fact_sales_hourly.csv` et `inventory_replenishment_daily.csv` |
 
-Sources: [11_build_kpi_tables.py:15-125](), [kpi_network_sales_summary.csv](), [kpi_daily_store_kpi.csv]()
+Sources : [11_build_kpi_tables.py:15-125](), [kpi_network_sales_summary.csv](), [kpi_daily_store_kpi.csv]()
 
-### KPI Flow Diagram
+### Diagramme flux KPI
 
 ```mermaid
 graph TD
-  Sales["fact_sales\nhourly.csv"]
-  Inv["inventory\nreplenish-\nment.csv"]
-  CompDem["component\nhourly\nDemand.csv"]
-  NetSales["kpi_network_\nsales_summary"]
-  ByHour["kpi_sales_\nby_hour"]
-  TopProd["kpi_top_\nproducts"]
-  InvStore["kpi_inventory_\nby_store"]
-  TopOrd["kpi_top_\nordered\ncomponents"]
-  TopCons["kpi_top_\nconsumed\ncomponents"]
-  DailyKPI["kpi_daily_\nstore_kpi"]
+  Sales["fact_sales\nhoraire.csv"]
+  Inv["inventaire\nréapprovision-\nquotidien"]
+  CompDem["demande\ncomposant\nhoraire"]
+  NetSales["kpi_résumé\nventes\nréseau"]
+  ByHour["kpi_ventes_\npar_heure"]
+  TopProd["kpi_top_\nproduits"]
+  InvStore["kpi_inventaire_\npar_magasin"]
+  TopOrd["kpi_top_\ncomposants\ncommandés"]
+  TopCons["kpi_top_\ncomposants\nconsommés"]
+  DailyKPI["kpi_magasin_\nquotidien"]
 
   Sales --> NetSales
   Sales --> ByHour
@@ -881,31 +881,31 @@ graph TD
   Inv --> DailyKPI
 ```
 
-Sources: [11_build_kpi_tables.py:15-125](), [kpi_network_sales_summary.csv](), [kpi_daily_store_kpi.csv]()
+Sources : [11_build_kpi_tables.py:15-125](), [kpi_network_sales_summary.csv](), [kpi_daily_store_kpi.csv]()
 
 ---
 
-## Data Model Overview
+## Vue d'ensemble modèle données
 
-### Core Fact Tables
+### Tableaux faits principaux
 
-| Table | Level | Purpose | Key Fields |
-|-------|-------|---------|-----------|
-| `fact_sales_hourly.csv` | Store–product–hour | Synthetic point‑of‑sale–like data with calendar/event context. | `store_id`, `date`, `hour`, `product_id`, `product_name`, `qty_sold`, `revenue`, `is_menu`, calendar flags, multipliers. |
-| `component_hourly_demand.csv` | Store–component–hour | Derived component consumption per hour based on BOM and menu rules. | `store_id`, `date`, `hour`, `component_id`, `qty_component_needed`, `component_name`, `storage_zone`, `unit_type`. |
-| `inventory_replenishment_daily.csv` | Store–component–day | Simulated stock levels, safety stock, reorder metrics, and recommended orders. | `opening_stock_units`, `closing_stock_pre_order_units`, `target_stock_units`, `order_recommended_units`, flags. |
-| `order_recommendations.csv` | Store–component–day (filtered) | Actionable recommendations with urgency and justification. | `recommended_order_units`, `recommended_order_cases`, `urgency_level`, `justification`. |
-| `kpi_*.csv` | Various | Aggregated KPIs for sales, components, and inventory per dimension. | Depends on file; generally counts, sums, and flags. |
+| Table | Niveau | Objectif | Champs clés |
+|-------|--------|----------|-----------|
+| `fact_sales_hourly.csv` | Magasin–produit–heure | Données synthétiques type point vente avec contexte calendrier/événements. | `store_id`, `date`, `hour`, `product_id`, `product_name`, `qty_sold`, `reven[...]
+| `component_hourly_demand.csv` | Magasin–composant–heure | Consommation composants dérivée par heure basée sur BOM et règles menu. | `store_id`, `date`, `hour`, `component_id`, `qty_composant_necessaire`, `[...]
+| `inventory_replenishment_daily.csv` | Magasin–composant–jour | Niveaux stock simulés, stock sécurité, métriques réapprovisionnement et commandes recommandées. | `stock_ouverture_unites`, `stock_fermeture_pre_commande_unites[...]
+| `order_recommendations.csv` | Magasin–composant–jour (filtré) | Recommandations actionnables avec urgence et justification. | `unites_commande_recommandees`, `cases_commande_recommandees`, `niveau_urgence`,[...]
+| `kpi_*.csv` | Divers | KPIs agrégés pour ventes, composants et inventaire par dimension. | Dépend fichier ; généralement dénombrements, sommes et drapeaux. |
 
-Sources: [fact_sales_hourly.csv](), [component_hourly_demand.csv](), [inventory_replenishment_daily.csv](), [order_recommendations.csv](), [kpi_daily_store_kpi.csv](), [11_build_kpi_tables.py:15-125]()
+Sources : [fact_sales_hourly.csv](), [component_hourly_demand.csv](), [inventory_replenishment_daily.csv](), [order_recommendations.csv](), [kpi_daily_store_kpi.csv](), [11_build_kpi_tables.py:15-125]([...]
 
 ```mermaid
 graph TD
-  FactSales["Fact\nSales\nHourly"]
-  CompDemand["Component\nHourly\nDemand"]
-  InvDaily["Inventory\nDaily"]
-  Orders["Order\nRecomm."]
-  KPIs["KPI\nTables"]
+  FactSales["Faits\nVentes\nHoraires"]
+  CompDemand["Demande\nComposants\nHoraire"]
+  InvDaily["Inventaire\nQuotidien"]
+  Orders["Recomm.\nCommande"]
+  KPIs["Tables\nKPI"]
 
   FactSales --> CompDemand
   CompDemand --> InvDaily
@@ -915,10 +915,10 @@ graph TD
   CompDemand --> KPIs
 ```
 
-Sources: [09_explode_sales_to_components.py:200-270](), [10_generate_inventory_and_replenishment.py:40-120](), [11_generate_order_recommendations.py:45-210](), [11_build_kpi_tables.py:15-125]()
+Sources : [09_explode_sales_to_components.py:200-270](), [10_generate_inventory_and_replenishment.py:40-120](), [11_generate_order_recommendations.py:45-210](), [11_build_kpi_tables.py:15-125]()
 
 ---
 
 ## Conclusion
 
-The MCD_forecasting project implements a coherent, file‑based simulation pipeline from master data and synthetic calendars to detailed component demand, inventory states, and actionable order recommendations. Each script contributes a clear transformation: master data extraction and validation, calendar and event modeling, hourly sales simulation, menu and BOM explosion, inventory simulation, and finally advanced recommendation and KPI generation. Together, these steps form a reproducible data flow suitable for analyzing how sales patterns drive component consumption and inventory decisions across stores. Sources: [01_load_master_data.py](), [07_generate_hourly_sales.py](), [09_explode_sales_to_components.py](), [10_generate_inventory_and_replenishment.py](), [11_generate_order_recommendations.py](), [11_build_kpi_tables.py]()
+Le projet MCD_forecasting implémente un pipeline simulation cohérent basé fichiers depuis données maîtres et calendriers synthétiques jusqu'à demande composants détaillée, états inventaire et recommandations commandes actionnables [...]
