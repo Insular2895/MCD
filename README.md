@@ -111,6 +111,7 @@ A 5-page Streamlit dashboard provides an interactive view of the full pipeline o
 ```bash
 streamlit run app.py
 ```
+<img width="1440" height="2306" alt="image" src="https://github.com/user-attachments/assets/32b8986e-fbdc-4e0c-94c4-0eca8f2735c6" />
 
 ---
 
