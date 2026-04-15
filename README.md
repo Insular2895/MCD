@@ -103,12 +103,17 @@ A 4-tab interactive dashboard provides a decision-support view of the full pipel
  
 | Tab | What it shows |
 |---|---|
-| **Executive Overview** | 10 network KPIs, revenue by store, daily trend, alert summary, purchase budget |
+| **Executive Overview** | many network KPIs, revenue by store, daily trend, alert summary, purchase budget |
 | **Demand Analysis** | Hourly revenue and units (peak at 13h), top products by volume and by revenue |
 | **Store & Products** | Daily revenue, units, and inventory alert trends per store |
 | **Purchase Recommendations** | Urgency breakdown, top components by value and cases, filterable 688-row action table |
  
-<img width="1440" alt="Dashboard screenshot" src="https://github.com/user-attachments/assets/32b8986e-fbdc-4e0c-94c4-0eca8f2735c6" />
+<img width="653" height="382" alt="Image_15-04-2026_à_22 12-removebg-preview" src="https://github.com/user-attachments/assets/04d11b72-a2b6-4330-9e48-7a3d511bdc0f" />
+<img width="800" height="312" alt="Image_15-04-2026_à_22 12-removebg-preview (1)" src="https://github.com/user-attachments/assets/f5ae2a77-9a61-4e1e-9fdc-d61b4ca34894" />
+<img width="786" height="317" alt="Image_15-04-2026_à_22 11-removebg-preview" src="https://github.com/user-attachments/assets/bbfb14fe-41f1-4bff-b17e-0cd5b2e1699f" />
+<img width="684" height="411" alt="image" src="https://github.com/user-attachments/assets/c19efefc-9418-4964-a816-750a9cea13c8" />
+
+
 ---
  
 ## Skills Demonstrated
@@ -234,9 +239,9 @@ All processed outputs are written to `mcd_forecasting_project/data/processed/`.
 <summary>View full structure</summary>
 ```
 MCD/
-├── app.py                              # Dashboard entry point
+├── app.py                              
 ├── requirements.txt
-├── assumptions.md                      # Documented decisions and known data limits
+├── assumptions.md                      
 ├── README.md
 ├── mcd_forecasting_project/
 │   ├── data/
@@ -274,9 +279,9 @@ MCD/
  
 ## Project Reflections
  
-Building this pipeline made clear that the hardest part of operations analytics isn't the aggregation — it's designing the intermediate data contracts cleanly. Keeping `inventory_replenishment_daily.csv` as the single source of truth between the simulation and the recommendation engine forced cleaner thinking about what each layer should and shouldn't know.
+Building this pipeline made clear that the hardest part of operations analytics isn't the aggregation , it's designing the intermediate data contracts cleanly. Keeping `inventory_replenishment_daily.csv` as the single source of truth between the simulation and the recommendation engine forced cleaner thinking about what each layer should and shouldn't know.
  
-The BOM explosion step also surfaced an underappreciated challenge in QSR contexts: menu items aren't atomic. A Menu Big Mac is 3–4 distinct component pulls depending on customer choice (Frites M vs L, Coca M vs L). Modelling that probabilistically — rather than assuming a single decomposition — is what makes component demand realistic rather than mechanical.
+The BOM explosion step also surfaced an underappreciated challenge in QSR contexts: menu items aren't atomic. A Menu Big Mac is 3–4 distinct component pulls depending on customer choice (Frites M vs L, Coca M vs L). Modelling that probabilistically , rather than assuming a single decomposition , is what makes component demand realistic rather than mechanical.
  
  
 **What I'd add next:**
