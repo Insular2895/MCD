@@ -5,7 +5,7 @@
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-Data%20Pipeline-150458?logo=pandas&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?logo=streamlit&logoColor=white)
+
 
 ---
 
