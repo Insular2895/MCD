@@ -1,53 +1,57 @@
+Readme · MD
+Copier
+
 # 🍟 McDonald's Network Demand Forecasting & Replenishment Orchestration
-
-> **Simulating a full-stack operations pipeline for a 2-store McDonald's network** —
-> from synthetic hourly sales to actionable purchase recommendations, inventory alerts and executive KPIs.
-
+ 
+> **A proof-of-concept operations analytics pipeline for a 2-store McDonald's network** —
+> from synthetic hourly sales to simulated purchase recommendations, inventory alerts and decision-support KPIs.
+ 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white)
 ![Pandas](https://img.shields.io/badge/Pandas-Data%20Pipeline-150458?logo=pandas&logoColor=white)
-
-
+ 
 ---
-
+ 
 ## Table of Contents
-
+ 
 - [Project Overview](#project-overview)
 - [Business Objective](#business-objective)
 - [End-to-End Pipeline](#end-to-end-pipeline)
 - [Key Outputs](#key-outputs)
 - [Dashboard](#dashboard)
 - [Skills Demonstrated](#skills-demonstrated)
+- [Limitations & Assumptions](#limitations--assumptions)
+- [Operational Recommendations](#operational-recommendations)
+- [What a Real Deployment Would Require](#what-a-real-deployment-would-require)
 - [Tech Stack](#tech-stack)
 - [How to Run](#how-to-run)
 - [Repository Structure](#repository-structure)
 - [Project Reflections](#project-reflections)
-
 ---
-
+ 
 ## Project Overview
-
+ 
 This project simulates the full operational data cycle of a quick-service restaurant network — two McDonald's locations in Dreux, France.
-
+ 
 The pipeline starts from a structured Excel workbook (products, recipes, components), generates realistic hourly sales with demand seasonality and local events, then cascades that demand through a Bill of Materials to produce daily inventory positions, replenishment signals and prioritised purchase recommendations.
-
-The result is a **portfolio-grade operations analytics system** that mirrors what a real supply chain or restaurant ops analyst would build: grounded in business logic, end-to-end traceable, and decision-ready.
-
+ 
+The goal is not to build a production-ready system, but to **demonstrate end-to-end analytical thinking**: how raw operational data can be structured, transformed, and surfaced into actionable decision-support outputs. This is a portfolio demonstration of data engineering, supply chain logic and business intelligence skills — not a deployed product.
+ 
 ---
-
+ 
 ## Business Objective
-
-| Challenge | What this project addresses |
+ 
+| Challenge | What this project demonstrates |
 |---|---|
-| **Demand variability** | Simulate realistic peaks (lunch rush, weekends, school holidays, local fair) by store |
-| **Stockout prevention** | Track daily inventory vs. reorder point and safety stock per component |
-| **Waste reduction** | Flag overstock risk and DLC loss exposure per storage zone |
-| **Replenishment automation** | Generate prioritised purchase orders with urgency levels and justification |
-| **Network visibility** | Consolidate KPIs across both stores into a single operational dashboard |
-
+| **Demand variability** | Modelling realistic hourly sales peaks (lunch rush, weekends, school holidays, local events) by store |
+| **Stockout prevention** | Tracking simulated daily inventory vs. reorder point and safety stock per component |
+| **Waste reduction** | Flagging overstock risk and DLC loss exposure per storage zone |
+| **Replenishment logic** | Generating rule-based, prioritised purchase signals with urgency levels and justification |
+| **Network visibility** | Consolidating KPIs across two stores into a single decision-support dashboard |
+ 
 ---
-
+ 
 ## End-to-End Pipeline
-
+ 
 ```mermaid
 graph TD
     A["📥 Raw Excel\nProducts · BOM · Components"]
@@ -57,7 +61,7 @@ graph TD
     E["📦 Inventory Simulation\nstock · safety stock · reorder point"]
     F["🛍️ Purchase Recommendations\nurgency · forecast · justification"]
     G["📊 KPI Tables\nnetwork · store · product · hour"]
-
+ 
     A --> C
     B --> C
     C --> D
@@ -69,7 +73,7 @@ graph TD
     C --> G
     D --> G
 ```
-
+ 
 | Step | Script | Output |
 |---|---|---|
 | 1. Load master data | `01_load_master_data.py` | `produits_finis.csv`, `composants.csv`, `recettes_bom.csv` |
@@ -79,78 +83,136 @@ graph TD
 | 5. Simulate inventory | `10_generate_inventory_and_replenishment.py` | `inventory_replenishment_daily.csv` |
 | 6. Build recommendations | `11_generate_order_recommendations.py` | `order_recommendations.csv` |
 | 7. Aggregate KPIs | `11_build_kpi_tables.py` | `kpi_*.csv` |
-
+ 
 ---
-
+ 
 ## Key Outputs
-
-**`fact_sales_hourly.csv`** — Granular hourly sales by store, product and time slot with multipliers (hour · day · event).
-
+ 
+**`fact_sales_hourly.csv`** — Granular hourly sales by store, product and time slot with demand multipliers (hour · day · event).
+ 
 **`component_hourly_demand.csv`** — Component-level demand derived from the BOM, by store and hour.
-
-**`inventory_replenishment_daily.csv`** — Daily stock simulation per component: opening stock, closing stock, safety stock, reorder point, recommended order.
-
-**`order_recommendations.csv`** — Prioritised purchase lines with urgency (`critical` / `high` / `medium` / `low`), 3-day demand forecast and business justification.
-
+ 
+**`inventory_replenishment_daily.csv`** — Daily stock simulation per component: opening stock, closing stock, safety stock, reorder point, simulated order quantity.
+ 
+**`order_recommendations.csv`** — Rule-based purchase signals with urgency level (`critical` / `high` / `medium` / `low`), 3-day naive demand proxy and business justification string.
+ 
 **`kpi_*.csv`** — 7 KPI tables covering network sales, hourly patterns, top products, inventory by store, top components ordered and consumed, and daily store KPIs.
-
+ 
 ---
-
+ 
 ## Dashboard
-
-A 5-page Streamlit dashboard provides an interactive view of the full pipeline output.
-
-| Page | What it shows |
+ 
+A 4-tab interactive dashboard provides a decision-support view of the full pipeline output. It is designed to answer four operational questions: how is demand evolving, which stores and products are performing, where are the operational risks, and what should be purchased next.
+ 
+| Tab | What it shows |
 |---|---|
-| **Executive Overview** | 10 network KPIs, revenue by store, alerts summary, purchase budget |
-| **Demand & Product Mix** | Hourly revenue and units, top products by volume and value |
-| **Store Operations** | Daily revenue, order value, inventory alert trends per store |
-| **Purchase Recommendations** | Urgency breakdown, top components, filterable action table |
-| **Business Insights** | 10 auto-generated insights + operational interpretation |
-
-```bash
-streamlit run app.py
-```
-<img width="1440" height="2306" alt="image" src="https://github.com/user-attachments/assets/32b8986e-fbdc-4e0c-94c4-0eca8f2735c6" />
-
+| **Executive Overview** | 10 network KPIs, revenue by store, daily trend, alert summary, purchase budget |
+| **Demand Analysis** | Hourly revenue and units (peak at 13h), top products by volume and by revenue |
+| **Store & Products** | Daily revenue, units, and inventory alert trends per store |
+| **Purchase Recommendations** | Urgency breakdown, top components by value and cases, filterable 688-row action table |
+ 
+<img width="1440" alt="Dashboard screenshot" src="https://github.com/user-attachments/assets/32b8986e-fbdc-4e0c-94c4-0eca8f2735c6" />
 ---
-
+ 
 ## Skills Demonstrated
-
+ 
 - **End-to-end pipeline design** — 11 chained scripts, each with a clear input/output contract
-- **Demand simulation** — realistic hourly sales modelling with day-of-week, event and seasonal multipliers
+- **Demand simulation** — hourly sales modelling with day-of-week, event and seasonal multipliers
 - **BOM explosion logic** — translating menu sales into raw ingredient demand via a Bill of Materials
 - **Inventory simulation** — safety stock, reorder point and target stock computation by storage zone
-- **Replenishment engine** — rule-based order recommendation with 3-day rolling forecast and urgency scoring
+- **Prototype replenishment engine** — rule-based order recommendations with 3-day rolling demand proxy and urgency scoring
 - **KPI design** — operational metrics structured for both network-level and store-level decision-making
-- **Dashboard delivery** — Streamlit + Plotly, portfolio-ready, filter-driven, 5 distinct analytical pages
-- **Business translation** — connecting ops logic (QSR supply chain context) to a clean data model
-
+- **Dashboard delivery** — interactive, filter-driven, 4-tab decision-support interface
+- **Business translation** — connecting QSR supply chain logic to a structured data model
+- **Data quality awareness** — explicit audit phase, anomaly documentation, documented assumptions
 ---
-
+ 
+## Limitations & Assumptions
+ 
+This project is a simulation and demonstration. The following limitations should be understood before drawing any operational conclusions from its outputs.
+ 
+**Data**
+- All sales data is synthetically generated from probability distributions and business rules. No real POS data was used.
+- The BOM is simplified and based on assumed menu composition ratios — not validated against actual McDonald's recipes or supplier specifications.
+- Revenue figures in `raw_daily_store_kpi` contain many zero-value entries due to an incomplete pipeline export. The network summary table (`raw_network_sales_summary`) is the more reliable revenue reference.
+**Replenishment logic**
+- Purchase recommendations are produced by a rule-based engine using static reorder points and a naive 3-day demand proxy (rolling shift). This is not a trained forecasting model.
+- Urgency levels reflect proximity to reorder thresholds, not actual stockout probability.
+- Some `unit_cost` values are corrupted in the source file (dates recorded instead of costs). Affected components are flagged in `data_quality_report.md` and excluded from unit-cost calculations.
+**Scope**
+- The pipeline covers a single simulated month (April 2026). Seasonal or structural patterns outside this window are not captured.
+- There is no inter-store transfer logic. The two stores are treated as independent supply units.
+- Storage zone constraints (cold chain, freezer capacity) are approximated, not modelled with real physical limits.
+**What this means in practice:** the outputs are suitable for demonstrating analytical logic, pipeline structure and dashboard design. They should not be used to drive real purchasing decisions without significant calibration against actual sales data, supplier lead times and physical inventory.
+ 
+---
+ 
+## Operational Recommendations
+ 
+Beyond what this prototype computes, a real multi-site analysis would surface a strategic lever that is often overlooked: **inter-store stock reallocation before external purchasing**.
+ 
+In this two-store network:
+ 
+- **S001 (centre-ville)** accumulates demand pressure during the local fair period, with sharp spikes on Friday through Sunday.
+- **S002 (haut de la ville)** sees reduced traffic during the same period and may be holding surplus stock for components that S001 urgently needs.
+A transfer-first policy would allow a multi-site franchisee to:
+ 
+- **Check inter-site availability** before generating an external order recommendation
+- **Reduce unnecessary purchase orders** and associated logistics costs
+- **Limit overstock accumulation at S002** and the associated waste and DLC risk
+- **Smooth stock tension at S001** without inflating the overall replenishment budget
+- Use purchasing as a last lever, not the default first response
+This logic requires a shared real-time inventory view across locations — which this prototype approximates with its daily KPI layer — and a decision rule that checks cross-site availability upstream of the order engine. It is documented as a priority next step in `assumptions.md`.
+ 
+---
+ 
+## What a Real Deployment Would Require
+ 
+This project is a structured proof of concept. Moving from this prototype to a production-grade tool would require the following additions.
+ 
+**Data infrastructure**
+- Live POS integration to replace synthetic sales generation
+- Real-time inventory feeds per storage zone (negative, cold, dry)
+- Supplier lead times and minimum order quantities per component
+- Historical data covering at least 12 months to capture seasonality properly
+**Forecasting layer**
+- Replacement of the naive 3-day demand proxy with a proper time-series model (Prophet, exponential smoothing, or gradient boosting on lagged features)
+- Event calendar enrichment with school holiday schedules, local event data and promotional calendars
+- Confidence intervals on demand forecasts to calibrate safety stock dynamically
+**Replenishment engine**
+- Inter-store transfer logic upstream of external order generation
+- Supplier-aware ordering (minimum cases, delivery windows, order cut-off times)
+- Dynamic reorder points recalibrated from rolling actuals rather than static rules
+**Operations & governance**
+- Field validation by store managers before order execution
+- Feedback loop to measure forecast accuracy and adjust model parameters over time
+- Role-based access in the dashboard (network-level vs. store-level views)
+- Automated pipeline refresh on a daily or weekly cadence with output validation
+---
+ 
 ## Tech Stack
-
+ 
 | Tool | Usage |
 |---|---|
 | ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white) | Pipeline, simulation, data transformation |
 | ![Pandas](https://img.shields.io/badge/Pandas-Data%20Pipeline-150458?logo=pandas&logoColor=white) | Data transformation and aggregation |
-| ![Google Sheets](https://img.shields.io/badge/Google%20Sheets-Reporting-34A853?logo=googlesheets&logoColor=white) |Master data setup and reporting |
-|![Power BI](https://img.shields.io/badge/Power%20BI-Dashboard-F2C811?logo=powerbi&logoColor=black)| Dashboard and KPI visualization |
+| ![Google Sheets](https://img.shields.io/badge/Google%20Sheets-Reporting-34A853?logo=googlesheets&logoColor=white) | Master data setup and reporting |
+| ![Power BI](https://img.shields.io/badge/Power%20BI-Dashboard-F2C811?logo=powerbi&logoColor=black) | Dashboard and KPI visualisation |
 | ![openpyxl](https://img.shields.io/badge/openpyxl-Excel%20Parsing-2E7D32?logo=microsoft-excel&logoColor=white) | Excel input parsing |
-|![Mermaid](https://img.shields.io/badge/Mermaid-Diagrams-FF3670?logo=mermaid&logoColor=white) | Pipeline diagrams |
-
+| ![Mermaid](https://img.shields.io/badge/Mermaid-Diagrams-FF3670?logo=mermaid&logoColor=white) | Pipeline diagrams |
+ 
 ---
-
+ 
 ## How to Run
-
+ 
 ```bash
 # 1. Clone the repo
 git clone https://github.com/Insular2895/MCD.git
 cd MCD
-
+ 
 # 2. Install dependencies
 pip install -r requirements.txt
-
+ 
 # 3. Run the pipeline (in order)
 python mcd_forecasting_project/scripts/01_load_master_data.py
 python mcd_forecasting_project/scripts/05_create_calendar_hourly.py
@@ -160,23 +222,22 @@ python mcd_forecasting_project/scripts/09_explode_sales_to_components.py
 python mcd_forecasting_project/scripts/10_generate_inventory_and_replenishment.py
 python mcd_forecasting_project/scripts/11_generate_order_recommendations.py
 python mcd_forecasting_project/scripts/11_build_kpi_tables.py
-
-# 4. Launch the dashboard
+ 
+# 4. Open the dashboard
 streamlit run app.py
 ```
-
+ 
 All processed outputs are written to `mcd_forecasting_project/data/processed/`.
-
+ 
 ---
-
+ 
 ## Repository Structure
-
+ 
 <details>
 <summary>View full structure</summary>
-
 ```
 MCD/
-├── app.py                              # Streamlit dashboard (5 pages)
+├── app.py                              # Dashboard entry point
 ├── requirements.txt
 ├── assumptions.md                      # Documented decisions and known data limits
 ├── README.md
@@ -210,23 +271,24 @@ MCD/
     ├── executive_report.md
     └── data_quality_report.md
 ```
-
+ 
 </details>
-
 ---
-
+ 
 ## Project Reflections
-
+ 
 Building this pipeline made clear that the hardest part of operations analytics isn't the aggregation — it's designing the intermediate data contracts cleanly. Keeping `inventory_replenishment_daily.csv` as the single source of truth between the simulation and the recommendation engine forced cleaner thinking about what each layer should and shouldn't know.
-
+ 
 The BOM explosion step also surfaced an underappreciated challenge in QSR contexts: menu items aren't atomic. A Menu Big Mac is 3–4 distinct component pulls depending on customer choice (Frites M vs L, Coca M vs L). Modelling that probabilistically — rather than assuming a single decomposition — is what makes component demand realistic rather than mechanical.
-
+ 
+The audit phase was also more consequential than expected. Several columns in the source Excel contained corrupted data types (dates recorded as unit costs), headers offset by multiple rows, and revenue fields zeroed out for a large share of dates. Documenting these explicitly in `data_quality_report.md` and `assumptions.md` was as important as fixing them — it forces honesty about what the outputs actually represent.
+ 
 **What I'd add next:**
-- Replace the naive 3-day forecast with a proper time-series model (Prophet or simple exponential smoothing)
+- Replace the naive 3-day demand proxy with a proper time-series model (Prophet or exponential smoothing)
+- Add inter-store transfer logic upstream of external purchase recommendations
 - Add store-level hourly breakdown to the product mix analysis
-- Deploy the dashboard to Streamlit Cloud
-- Build a CI step to regenerate outputs automatically on data change
-
+- Deploy the pipeline on a daily refresh cadence with automated output validation
 ---
-
+ 
 *Simulation period: April 2026 · Stores: S001 (Dreux centre-ville) · S002 (Dreux haut de la ville)*
+*All data is synthetic. This project is a portfolio demonstration, not a production system.*
