@@ -164,7 +164,7 @@ A transfer-first policy would allow a multi-site franchisee to:
 - **Limit overstock accumulation at S002** and the associated waste and DLC risk
 - **Smooth stock tension at S001** without inflating the overall replenishment budget
 - Use purchasing as a last lever, not the default first response
-This logic requires a shared real-time inventory view across locations — which this prototype approximates with its daily KPI layer — and a decision rule that checks cross-site availability upstream of the order engine. It is documented as a priority next step in `assumptions.md`.
+This logic requires a shared real-time inventory view across locations — which this prototype approximates with its daily KPI layer — and a decision rule that checks cross-site availability upstream of the order engine.
  
 ---
  
@@ -239,9 +239,9 @@ All processed outputs are written to `mcd_forecasting_project/data/processed/`.
 <summary>View full structure</summary>
 ```
 MCD/
-├── app.py                              
+├── app.py                              # Dashboard entry point
 ├── requirements.txt
-├── assumptions.md                      
+├── assumptions.md                      # Documented decisions and known data limits
 ├── README.md
 ├── mcd_forecasting_project/
 │   ├── data/
@@ -272,7 +272,7 @@ MCD/
 └── reports/
     ├── executive_report.md
     └── data_quality_report.md
-```
+``
  
 </details>
 ---
