@@ -1,6 +1,3 @@
-Readme · MD
-Copier
-
 # 🍟 McDonald's Network Demand Forecasting & Replenishment Orchestration
  
 > **A proof-of-concept operations analytics pipeline for a 2-store McDonald's network** —
@@ -281,7 +278,6 @@ Building this pipeline made clear that the hardest part of operations analytics 
  
 The BOM explosion step also surfaced an underappreciated challenge in QSR contexts: menu items aren't atomic. A Menu Big Mac is 3–4 distinct component pulls depending on customer choice (Frites M vs L, Coca M vs L). Modelling that probabilistically — rather than assuming a single decomposition — is what makes component demand realistic rather than mechanical.
  
-The audit phase was also more consequential than expected. Several columns in the source Excel contained corrupted data types (dates recorded as unit costs), headers offset by multiple rows, and revenue fields zeroed out for a large share of dates. Documenting these explicitly in `data_quality_report.md` and `assumptions.md` was as important as fixing them — it forces honesty about what the outputs actually represent.
  
 **What I'd add next:**
 - Replace the naive 3-day demand proxy with a proper time-series model (Prophet or exponential smoothing)
