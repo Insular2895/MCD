@@ -132,10 +132,10 @@ streamlit run app.py
 | Tool | Usage |
 |---|---|
 | ![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white) | Pipeline, simulation, data transformation |
-| ![Pandas](https://img.shields.io/badge/Pandas-Data%20Pipeline-150458?logo=pandas&logoColor=white) | All data wrangling and aggregation |
-| ![Google Sheets](https://img.shields.io/badge/Google%20Sheets-Reporting-34A853?logo=googlesheets&logoColor=white) | Inventory calculations |
-|![Power BI](https://img.shields.io/badge/Power%20BI-Dashboard-F2C811?logo=powerbi&logoColor=black)| Interactive dashboard |
-| ![openpyxl](https://img.shields.io/badge/openpyxl-Excel%20Parsing-2E7D32?logo=microsoft-excel&logoColor=white) | Excel source file parsing |
+| ![Pandas](https://img.shields.io/badge/Pandas-Data%20Pipeline-150458?logo=pandas&logoColor=white) | Data transformation and aggregation |
+| ![Google Sheets](https://img.shields.io/badge/Google%20Sheets-Reporting-34A853?logo=googlesheets&logoColor=white) |Master data setup and reporting |
+|![Power BI](https://img.shields.io/badge/Power%20BI-Dashboard-F2C811?logo=powerbi&logoColor=black)| Dashboard and KPI visualization |
+| ![openpyxl](https://img.shields.io/badge/openpyxl-Excel%20Parsing-2E7D32?logo=microsoft-excel&logoColor=white) | Excel input parsing |
 |![Mermaid](https://img.shields.io/badge/Mermaid-Diagrams-FF3670?logo=mermaid&logoColor=white) | Pipeline diagrams |
 
 ---
