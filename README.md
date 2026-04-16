@@ -232,16 +232,11 @@ streamlit run app.py
 All processed outputs are written to `mcd_forecasting_project/data/processed/`.
  
 ---
- 
 ## Repository Structure
- 
-<details>
-<summary>View full structure</summary>
-```
+```markdown
+
 MCD/
-├── app.py                              # Dashboard entry point
-├── requirements.txt
-├── assumptions.md                      # Documented decisions and known data limits
+├── assumptions.md                      
 ├── README.md
 ├── mcd_forecasting_project/
 │   ├── data/
@@ -272,9 +267,9 @@ MCD/
 └── reports/
     ├── executive_report.md
     └── data_quality_report.md
-``
- 
+````
 </details>
+
 ---
  
 ## Project Reflections
