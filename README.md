@@ -212,10 +212,14 @@ This project is a structured proof of concept. Moving from this prototype to a p
 git clone https://github.com/Insular2895/MCD.git
 cd MCD
  
-# 2. Install dependencies
+# 2. Active venv
+python -m venv .venv
+source .venv/bin/activate
+
+# 3. Install dependencies
 pip install -r requirements.txt
  
-# 3. Run the pipeline (in order)
+# 4. Run the pipeline (in order)
 python mcd_forecasting_project/scripts/01_load_master_data.py
 python mcd_forecasting_project/scripts/05_create_calendar_hourly.py
 python mcd_forecasting_project/scripts/06_create_local_events.py
@@ -225,8 +229,15 @@ python mcd_forecasting_project/scripts/10_generate_inventory_and_replenishment.p
 python mcd_forecasting_project/scripts/11_generate_order_recommendations.py
 python mcd_forecasting_project/scripts/11_build_kpi_tables.py
  
-# 4. Open the dashboard
-streamlit run app.py
+# 5. Open the dashboard
+mcd_forecasting_project/data/processed/
+
+These files can be used directly in:
+
+Excel
+Google Sheets
+Power BI
+
 ```
  
 All processed outputs are written to `mcd_forecasting_project/data/processed/`.
@@ -238,6 +249,7 @@ All processed outputs are written to `mcd_forecasting_project/data/processed/`.
 MCD/
 ├── assumptions.md                      
 ├── README.md
+├── Requirements.txt
 ├── mcd_forecasting_project/
 │   ├── data/
 │   │   ├── raw/
