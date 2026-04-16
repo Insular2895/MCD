@@ -256,6 +256,10 @@ MCD/
 │   └── scripts/
 │       ├── 01_load_master_data.py
 │       ├── 02_validate_master_data.py
+│       ├── 02b_fix_finished_products_prices.py
+│       ├── 02c_fix_components_data.py
+│       ├── 03_create_menu_rules.py
+│       ├── 04_create_stores.py
 │       ├── 05_create_calendar_hourly.py
 │       ├── 06_create_local_events.py
 │       ├── 07_generate_hourly_sales.py
