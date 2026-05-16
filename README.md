@@ -1,4 +1,8 @@
-# 🍟 McDonald's Network Demand Forecasting & Replenishment Orchestration
+<div align="center">
+  <img src="docs/assets/mcd-animated.svg" alt="MCD animated logo" width="112" />
+</div>
+
+# McDonald's Network Demand Forecasting & Replenishment Orchestration
  
 > **A proof-of-concept operations analytics pipeline for a 2-store McDonald's network** —
 > from synthetic hourly sales to simulated purchase recommendations, inventory alerts and decision-support KPIs.

@@ -1,0 +1,25 @@
+<svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">MCD animated logo</title>
+  <desc id="desc">Animated network demand and replenishment mark.</desc>
+  <rect width="160" height="160" rx="34" fill="#111827"/>
+  <path d="M44 109V54c0-9 7-16 16-16s16 7 16 16v55" stroke="#FACC15" stroke-width="10" stroke-linecap="round"/>
+  <path d="M84 109V54c0-9 7-16 16-16s16 7 16 16v55" stroke="#F59E0B" stroke-width="10" stroke-linecap="round"/>
+  <g stroke="#60A5FA" stroke-width="4" stroke-linecap="round">
+    <path d="M34 119h92"/>
+    <path d="M47 126h66"/>
+  </g>
+  <g fill="#22C55E">
+    <circle cx="39" cy="92" r="7">
+      <animate attributeName="r" values="7;10;7" dur="1.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="80" cy="121" r="7">
+      <animate attributeName="r" values="7;10;7" dur="1.6s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="122" cy="92" r="7">
+      <animate attributeName="r" values="7;10;7" dur="1.8s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <path d="M39 92l41 29 42-29" stroke="#22C55E" stroke-width="4" stroke-linecap="round" stroke-dasharray="8 8">
+    <animate attributeName="stroke-dashoffset" values="0;-32" dur="1.4s" repeatCount="indefinite"/>
+  </path>
+</svg>
